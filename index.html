@@ -504,25 +504,14 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 
   <!-- Novedades -->
   <div style="margin-top:28px;margin-bottom:20px">
-    <div class="section-hdr"><h2>Novedades</h2><span>Abril 2026</span></div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div class="card" style="border-color:rgba(74,154,106,.3);display:flex;align-items:flex-start;gap:12px">
-        <span class="badge b-done" style="flex-shrink:0;margin-top:2px">✓ 20/03</span>
-        <div><strong>Clos del Este</strong> — Factibilidad de Gas aprobada por Litoral Gas (20/03/2026).</div>
-      </div>
-      <div class="card" style="border-color:rgba(74,154,106,.3);display:flex;align-items:flex-start;gap:12px">
-        <span class="badge b-done" style="flex-shrink:0;margin-top:2px">✓ 10/03</span>
-        <div><strong>Vitta Río</strong> — Factibilidad de Gas aprobada por Litoral Gas (10/03/2026). Convenio eléctrico EPE aprobado.</div>
-      </div>
-      <div class="card" style="border-color:rgba(80,128,192,.3);display:flex;align-items:flex-start;gap:12px">
-        <span class="badge b-proc" style="flex-shrink:0;margin-top:2px">⟳ 01/03</span>
-        <div><strong>Campo Madero</strong> — Proyecto eléctrico de obra complementaria: salió de EPE Sucursal Rosario y está en Área Técnica Santa Fe (01/03/2026). A la espera de novedades.</div>
-      </div>
-      <div class="card" style="border-color:rgba(201,168,64,.25);display:flex;align-items:flex-start;gap:12px">
-        <span class="badge b-new" style="flex-shrink:0;margin-top:2px">⚑ interno</span>
-        <div><strong>CEPE</strong> — Avance legal-tributario con municipalidad para posesión. <em style="color:var(--red);font-size:11px">⚠ Información interna — no comunicar a clientes.</em></div>
-      </div>
+    <div class="section-hdr"><h2>Novedades</h2><span id="novedades-subtitle">Últimas cargadas</span></div>
+    <div class="chips" id="novedades-chips">
+      <button class="chip active" onclick="setNovedadesFilter('all',this)">Todas</button>
+      <button class="chip" onclick="setNovedadesFilter('cliente',this)">Aptas cliente</button>
+      <button class="chip" onclick="setNovedadesFilter('marketing',this)">Marketing</button>
+      <button class="chip" onclick="setNovedadesFilter('interna',this)">Internas</button>
     </div>
+    <div id="novedades-list" style="display:flex;flex-direction:column;gap:8px"></div>
   </div>
 
 </div>
@@ -661,6 +650,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 <script src="./data/estrategia.js"></script>
 <script src="./data/clientes.js"></script>
 <script src="./data/checklist.js"></script>
+<script src="./data/novedades.js"></script>
 
 <script>
 // ══════════════════════════════════════════════════════════════
@@ -1690,6 +1680,89 @@ function exportInformePDF(){
   // ── Imprimir ──────────────────────────────────────────────
   setTimeout(()=>{ window.print(); }, 120);
 }
+
+// ── NOVEDADES ────────────────────────────────────────────────
+let novedadesFilter = 'all';
+
+function formatFechaNovedad(fecha){
+  if(!fecha) return '';
+  const parts = fecha.split('-');
+  if(parts.length !== 3) return fecha;
+  return `${parts[2]}/${parts[1]}`;
+}
+
+function novedadBadgeClass(n){
+  if(n.visibilidad === 'interna' || n.visibilidad === 'direccion') return 'b-new';
+  if(n.categoria === 'obra') return 'b-done';
+  if(n.categoria === 'gestion') return 'b-proc';
+  if(n.categoria === 'servicios') return 'b-done';
+  if(n.categoria === 'mantenimiento') return 'b-proc';
+  return 'b-proc';
+}
+
+function novedadBadgeText(n){
+  const fecha = formatFechaNovedad(n.fecha);
+  if(n.visibilidad === 'interna') return `⚑ ${fecha || 'interno'}`;
+  if(n.visibilidad === 'direccion') return `◆ ${fecha || 'dirección'}`;
+  if(n.categoria === 'obra') return `✓ ${fecha}`;
+  if(n.categoria === 'gestion') return `⟳ ${fecha}`;
+  if(n.categoria === 'servicios') return `✓ ${fecha}`;
+  if(n.categoria === 'mantenimiento') return `• ${fecha}`;
+  return fecha || 'novedad';
+}
+
+function setNovedadesFilter(filter, btn){
+  novedadesFilter = filter;
+  document.querySelectorAll('#novedades-chips .chip').forEach(c=>c.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderNovedades();
+}
+
+function getNovedadesFiltradas(){
+  const list = typeof NOVEDADES !== 'undefined' ? [...NOVEDADES] : [];
+  const sorted = list.sort((a,b)=>String(b.fecha||'').localeCompare(String(a.fecha||'')));
+  return sorted.filter(n=>{
+    if(novedadesFilter === 'cliente') return n.visibilidad === 'cliente' && n.apto_postventa !== false;
+    if(novedadesFilter === 'marketing') return n.apto_marketing === true;
+    if(novedadesFilter === 'interna') return n.visibilidad === 'interna' || n.visibilidad === 'direccion';
+    return true;
+  });
+}
+
+function renderNovedades(){
+  const cont = document.getElementById('novedades-list');
+  const subtitle = document.getElementById('novedades-subtitle');
+  if(!cont) return;
+  const novedades = getNovedadesFiltradas().slice(0, 8);
+  if(subtitle){
+    subtitle.textContent = novedadesFilter === 'all' ? 'Últimas cargadas' :
+      novedadesFilter === 'cliente' ? 'Aptas para postventa' :
+      novedadesFilter === 'marketing' ? 'Aptas para marketing' :
+      'Uso interno';
+  }
+  if(!novedades.length){
+    cont.innerHTML = '<div class="card"><span style="color:var(--muted)">No hay novedades cargadas para este filtro.</span></div>';
+    return;
+  }
+  cont.innerHTML = novedades.map(n=>{
+    const internal = n.visibilidad === 'interna' || n.visibilidad === 'direccion';
+    const marketing = n.apto_marketing ? '<span class="badge b-proc" style="margin-left:6px">Marketing</span>' : '';
+    const postventa = n.apto_postventa ? '<span class="badge b-done" style="margin-left:6px">Postventa</span>' : '';
+    const internalMsg = internal ? ' <em style="color:var(--red);font-size:11px">⚠ Información interna — no comunicar a clientes.</em>' : '';
+    return `
+      <div class="card" style="border-color:${internal ? 'rgba(201,168,64,.25)' : 'rgba(74,154,106,.3)'};display:flex;align-items:flex-start;gap:12px">
+        <span class="badge ${novedadBadgeClass(n)}" style="flex-shrink:0;margin-top:2px">${novedadBadgeText(n)}</span>
+        <div style="flex:1">
+          <div><strong>${n.barrio || 'General'}</strong> — ${n.detalle || n.titulo || ''}${internalMsg}</div>
+          <div style="margin-top:7px;display:flex;flex-wrap:wrap;gap:0">
+            <span class="badge b-na">${n.categoria || 'novedad'}</span>${postventa}${marketing}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
 </script>
 </body>
 </html>
