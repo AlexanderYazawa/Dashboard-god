@@ -1,0 +1,99 @@
+// Novedades operativas y de comunicación.
+// Este archivo alimenta el bloque "Novedades" del dashboard y puede ser leído por la API.
+//
+// Campos recomendados:
+// - fecha: YYYY-MM-DD.
+// - barrio_id: ID interno del barrio/proyecto.
+// - barrio: nombre visible.
+// - categoria: obra, gestion, servicios, mantenimiento, institucional, comercial.
+// - titulo: título corto.
+// - detalle: hecho concreto, sin interpretación.
+// - visibilidad: cliente, interna, direccion.
+// - apto_postventa / apto_marketing: si puede usarse para esos equipos.
+// - prioridad_comunicacion: baja, media, alta.
+// - formato_sugerido: historia, placa, reel, comunicado, informe.
+// - copy_base_marketing: texto base editable para redes.
+// - notas_internas: solo uso interno.
+
+const NOVEDADES = [
+  {
+    id: "nov-2026-03-20-cde-gas",
+    fecha: "2026-03-20",
+    barrio_id: "CDE",
+    barrio: "Clos del Este",
+    categoria: "servicios",
+    titulo: "Factibilidad de Gas aprobada",
+    detalle: "Factibilidad de Gas aprobada por Litoral Gas.",
+    visibilidad: "cliente",
+    apto_postventa: true,
+    apto_marketing: true,
+    prioridad_comunicacion: "media",
+    formato_sugerido: ["historia", "placa"],
+    copy_base_marketing: "Clos del Este suma un nuevo avance de gestión: la Factibilidad de Gas fue aprobada por Litoral Gas.",
+    notas_internas: ""
+  },
+  {
+    id: "nov-2026-03-10-vr-gas-epe",
+    fecha: "2026-03-10",
+    barrio_id: "VR",
+    barrio: "Vitta Río",
+    categoria: "servicios",
+    titulo: "Factibilidad de Gas y convenio eléctrico",
+    detalle: "Factibilidad de Gas aprobada por Litoral Gas. Convenio eléctrico EPE aprobado.",
+    visibilidad: "cliente",
+    apto_postventa: true,
+    apto_marketing: true,
+    prioridad_comunicacion: "media",
+    formato_sugerido: ["historia", "placa"],
+    copy_base_marketing: "Vitta Río continúa sumando avances de gestión: Factibilidad de Gas aprobada y convenio eléctrico EPE aprobado.",
+    notas_internas: ""
+  },
+  {
+    id: "nov-2026-03-01-cm-electrico",
+    fecha: "2026-03-01",
+    barrio_id: "CM",
+    barrio: "Campo Madero",
+    categoria: "gestion",
+    titulo: "Proyecto eléctrico en Área Técnica Santa Fe",
+    detalle: "El proyecto eléctrico de obra complementaria salió de EPE Sucursal Rosario y se encuentra en Área Técnica Santa Fe.",
+    visibilidad: "cliente",
+    apto_postventa: true,
+    apto_marketing: false,
+    prioridad_comunicacion: "alta",
+    formato_sugerido: ["informe", "respuesta_postventa"],
+    copy_base_marketing: "",
+    notas_internas: "Comunicar con cuidado. Evitar prometer plazos."
+  },
+  {
+    id: "nov-2026-04-cepe-legal-tributario",
+    fecha: "2026-04-01",
+    barrio_id: "CEPE",
+    barrio: "CEPE",
+    categoria: "gestion",
+    titulo: "Avance legal-tributario con municipalidad",
+    detalle: "Avance legal-tributario con municipalidad para posesión.",
+    visibilidad: "interna",
+    apto_postventa: false,
+    apto_marketing: false,
+    prioridad_comunicacion: "alta",
+    formato_sugerido: ["informe_interno"],
+    copy_base_marketing: "",
+    notas_internas: "Información interna — no comunicar a clientes."
+  },
+  {
+    id: "nov-2026-05-10-en-pavimento-pepito",
+    fecha: "2026-05-10",
+    barrio_id: "EN",
+    barrio: "El Naranjo",
+    categoria: "obra",
+    titulo: "Finalización de pavimentación",
+    detalle: "Se terminó de pavimentar la calle Pepito Marto desde Jorge Pecha hasta Martín Ojeda.",
+    visibilidad: "cliente",
+    apto_postventa: true,
+    apto_marketing: true,
+    prioridad_comunicacion: "media",
+    formato_sugerido: ["historia", "placa", "reel"],
+    copy_base_marketing: "Seguimos avanzando en El Naranjo: finalizamos la pavimentación de la calle Pepito Marto, desde Jorge Pecha hasta Martín Ojeda.",
+    notas_internas: ""
+  }
+];
