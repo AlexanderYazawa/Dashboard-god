@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grupo Roma · Panel Interno</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ── Paleta Grupo Roma ──────────────────────────────────────
+     Azul marino profundo (header brochures) + Azul eléctrico (CTAs)
+     Blanco puro para texto sobre marino. Grises fríos neutros.
+  ─────────────────────────────────────────────────────────── */
+  --bg:      #0a1220;       /* azul marino profundo — fondo principal */
+  --bg2:     #0f1c30;       /* marino medio — cards */
+  --bg3:     #162338;       /* marino claro — inputs, bg3 */
+  --border:  rgba(255,255,255,0.09);
+  --border2: rgba(71,148,255,0.35);  /* borde activo azul Roma */
+  --text:    #f0f4ff;       /* blanco azulado — texto principal */
+  --muted:   #7a94b8;       /* azul grisáceo — texto secundario */
+  --dim:     #3a5070;       /* azul oscuro — texto terciario */
+  --green:   #2ec87a;       /* verde éxito */
+  --green-l: rgba(46,200,122,0.13);
+  --amber:   #f0b429;       /* amarillo advertencia */
+  --amber-l: rgba(240,180,41,0.13);
+  --red:     #e05555;       /* rojo error */
+  --red-l:   rgba(224,85,85,0.13);
+  --blue:    #4794ff;       /* azul eléctrico Roma — acento principal */
+  --blue-l:  rgba(71,148,255,0.13);
+  --orange:  #ff7c40;       /* naranja urgente */
+  --orange-l:rgba(255,124,64,0.13);
+  --accent:  #4794ff;       /* = blue — acento Roma */
+  --accent2: #1a56cc;       /* azul profundo para gradientes */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh}
+
+/* ── TOPBAR ── */
+.topbar{background:linear-gradient(135deg,#0a1a35 0%,#0f2348 60%,#0d1e3a 100%);border-bottom:1px solid rgba(71,148,255,0.2);padding:0 24px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:100;height:52px}
+.brand{font-family:'DM Serif Display',serif;font-size:18px;color:#fff;margin-right:32px;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);display:inline-block}
+.topbar-tabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;flex:1}
+.topbar-tabs::-webkit-scrollbar{display:none}
+.ttab{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:0 18px;height:52px;display:flex;align-items:center;border:none;background:transparent;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.ttab:hover{color:var(--text)}
+.ttab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.topbar-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);margin-left:auto;white-space:nowrap}
+
+/* ── PAGES ── */
+.page{display:none;padding:24px;animation:fadeIn .25s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── GRID LAYOUTS ── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.grid3{grid-template-columns:1fr 1fr}.grid4{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid2,.grid3,.grid4{grid-template-columns:1fr}body{padding-bottom:64px}}
+
+/* ── CARDS ── */
+.card{background:var(--bg2);border:1px solid rgba(71,148,255,0.12);border-radius:10px;padding:16px}
+.card-title{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+
+/* ── STAT CARDS ── */
+.stat-card{background:var(--bg2);border:1px solid rgba(71,148,255,0.15);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.stat-num{font-family:'DM Serif Display',serif;font-size:32px;line-height:1}
+.stat-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* ── SECTION HEADERS ── */
+.section-hdr{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;margin-top:8px}
+.section-hdr h2{font-family:'DM Serif Display',serif;font-size:22px;color:#fff}
+.section-hdr span{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.5px;font-weight:500;white-space:nowrap}
+.b-done   {background:var(--green-l);color:var(--green)}
+.b-proc   {background:var(--blue-l);color:var(--blue)}
+.b-urgent {background:var(--orange-l);color:var(--orange)}
+.b-block  {background:var(--red-l);color:var(--red)}
+.b-na     {background:rgba(255,255,255,0.04);color:var(--dim)}
+.b-new    {background:var(--amber-l);color:var(--amber)}
+
+/* ── PROGRESS RING ── */
+.ring-wrap{position:relative;width:52px;height:52px;flex-shrink:0}
+.ring-wrap svg{transform:rotate(-90deg)}
+.ring-track{fill:none;stroke:var(--bg3);stroke-width:3.5}
+.ring-fill{fill:none;stroke-width:3.5;stroke-linecap:round}
+.ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;font-weight:500}
+
+/* ── PROJECT CARDS (home) ── */
+.proj-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:border-color .15s;display:flex;align-items:center;gap:14px}
+.proj-card:hover{border-color:var(--border2)}
+.proj-card.urgent{border-color:rgba(255,124,64,.5);background:rgba(255,124,64,.04)}
+.proj-info{flex:1;min-width:0}
+.proj-name{font-size:14px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proj-meta{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.5px}
+.proj-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+
+/* ── MINI PROGRESS BAR ── */
+.mini-bar-wrap{width:80px;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;flex-shrink:0}
+.mini-bar{height:100%;border-radius:2px;transition:width .6s ease}
+
+/* ── DETAIL PANEL (slide-in) ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;backdrop-filter:blur(4px)}
+.overlay.open{display:flex;align-items:flex-end;justify-content:center}
+@media(min-width:700px){.overlay.open{align-items:center}}
+.detail-sheet{background:var(--bg2);border:1px solid var(--border);border-radius:16px 16px 0 0;width:100%;max-width:700px;max-height:90vh;overflow-y:auto;animation:slideUp .3s ease;padding:0 0 32px}
+@media(min-width:700px){.detail-sheet{border-radius:16px;max-height:85vh}}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.detail-header{padding:20px 24px 0;display:flex;justify-content:space-between;align-items:flex-start;position:sticky;top:0;background:var(--bg2);border-bottom:1px solid var(--border);padding-bottom:16px}
+.detail-title{font-family:'DM Serif Display',serif;font-size:24px}
+.detail-close{background:var(--bg3);border:none;color:var(--muted);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.detail-close:hover{color:var(--text)}
+.detail-tabs{display:flex;gap:0;padding:0 24px;border-bottom:1px solid var(--border)}
+.dtab{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 14px;border:none;background:transparent;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.dtab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.detail-body{padding:20px 24px}
+.dpanel{display:none}.dpanel.active{display:block}
+
+/* ── HITO ROWS ── */
+.hito-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.hito-row:last-child{border-bottom:none}
+.hito-left{flex:1;min-width:0}
+.hito-name{font-size:12px;color:var(--text);font-weight:500}
+.hito-detail{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-top:3px}
+.hito-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+
+/* ── OBRA BARS ── */
+.obra-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.obra-row:last-child{border-bottom:none}
+.obra-name{font-size:12px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.obra-note{font-family:'DM Mono',monospace;font-size:9px;color:var(--red);margin-top:2px}
+.obra-pct-wrap{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.obra-bar-bg{width:80px;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.obra-bar-fill{height:100%;border-radius:3px}
+.obra-pct{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;width:30px;text-align:right}
+
+/* ── MODELOS DE RESPUESTA ── */
+.modelo-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;margin-bottom:12px;overflow:hidden}
+.modelo-head{padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.modelo-head:hover{background:rgba(255,255,255,.03)}
+.modelo-sit{flex:1;font-size:13px;font-weight:500}
+.modelo-chevron{color:var(--dim);transition:transform .2s;font-size:14px}
+.modelo-card.open .modelo-chevron{transform:rotate(90deg)}
+.modelo-body{display:none;padding:0 16px 16px}
+.modelo-card.open .modelo-body{display:block}
+.modelo-text{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px;font-size:12px;line-height:1.7;color:var(--text);white-space:pre-wrap;font-family:'DM Sans',sans-serif}
+.modelo-nota{margin-top:8px;font-size:11px;color:var(--amber);background:var(--amber-l);border-radius:5px;padding:8px 12px}
+.copy-btn{display:inline-flex;align-items:center;gap:5px;background:var(--bg2);border:1px solid var(--border);color:var(--muted);border-radius:5px;padding:5px 12px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;cursor:pointer;margin-top:8px;transition:all .15s}
+.copy-btn:hover{color:var(--text);border-color:var(--border2)}
+
+/* ── SEARCH ── */
+.search-wrap{position:relative;margin-bottom:20px}
+.search-input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 16px 10px 38px;outline:none;transition:border-color .15s}
+.search-input:focus{border-color:var(--border2)}
+.search-input::placeholder{color:var(--dim)}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:14px;pointer-events:none}
+
+/* ── FILTER CHIPS ── */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.chip{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s}
+.chip:hover,.chip.active{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
+
+/* ── STRATEGY TABLE ── */
+.strat-row{padding:14px 0;border-bottom:1px solid var(--border)}
+.strat-row:last-child{border-bottom:none}
+.strat-proj{font-size:13px;font-weight:600;margin-bottom:4px}
+.strat-foco{font-size:12px;color:var(--text);margin-bottom:4px}
+.strat-critico{font-size:11px;color:var(--muted);line-height:1.5}
+.strat-accion{font-size:11px;color:var(--amber);background:var(--amber-l);border-radius:5px;padding:6px 10px;margin-top:6px}
+
+/* ── CLIENTES ── */
+.cliente-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.cliente-row:last-child{border-bottom:none}
+.cliente-estado{width:10px;height:10px;border-radius:50%;margin-top:3px;flex-shrink:0}
+.cliente-info{flex:1}
+.cliente-name{font-size:13px;font-weight:600}
+.cliente-proj{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:3px}
+.cliente-perf{font-size:11px;color:var(--muted);line-height:1.4}
+.cliente-prot{font-size:11px;color:var(--amber);margin-top:4px}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);z-index:50}
+@media(max-width:600px){.bottom-nav{display:flex}}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 calc(8px + env(safe-area-inset-bottom));border:none;background:transparent;color:var(--dim);cursor:pointer;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase}
+.bnav-btn.active{color:var(--blue)}
+.bnav-icon{font-size:18px}
+
+/* ── ACCENT LINE ── */
+.accent-line{width:28px;height:2px;background:var(--accent);border-radius:1px;margin-bottom:16px}
+
+/* ── MOBILE PROJ LIST ── */
+@media(max-width:600px){.grid2.proj-grid{grid-template-columns:1fr}}
+/* ── PRINT / PDF STYLES ─────────────────────────────────── */
+@media print {
+  body > *:not(#pdf-report) { display: none !important; }
+  #pdf-report { display: block !important; }
+  @page { margin: 15mm 14mm; size: A4; }
+}
+
+/* ── PDF REPORT INTERNAL STYLES ─────────────────────────── */
+#pdf-report {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: #0a1220;
+  background: #fff;
+  padding: 0;
+  line-height: 1.5;
+}
+#pdf-report .pr-page {
+  background: #fff;
+  max-width: 800px;
+  margin: 0 auto;
+}
+#pdf-report .pr-header {
+  background: linear-gradient(135deg, #0a1a35 0%, #0f2348 70%, #0d1e3a 100%);
+  color: #fff;
+  padding: 28px 32px 22px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  page-break-inside: avoid;
+}
+#pdf-report .pr-logo-area {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+#pdf-report .pr-logo-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  color: #fff;
+  letter-spacing: .5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#pdf-report .pr-logo-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: #4794ff;
+  display: inline-block;
+  flex-shrink: 0;
+}
+#pdf-report .pr-logo-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+#pdf-report .pr-header-right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+#pdf-report .pr-proj-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  color: #fff;
+}
+#pdf-report .pr-proj-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 1px;
+}
+#pdf-report .pr-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: #4794ff;
+  margin-top: 6px;
+}
+#pdf-report .pr-body {
+  padding: 24px 32px;
+}
+#pdf-report .pr-section-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #4794ff;
+  border-bottom: 1px solid #e0e8f0;
+  padding-bottom: 5px;
+  margin: 20px 0 12px;
+}
+#pdf-report .pr-kpi-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+#pdf-report .pr-kpi {
+  flex: 1;
+  background: #f0f5ff;
+  border-radius: 8px;
+  padding: 12px 14px;
+  border-left: 3px solid #4794ff;
+}
+#pdf-report .pr-kpi-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: #6080a0;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+#pdf-report .pr-kpi-val {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px;
+  color: #0a1a35;
+  line-height: 1;
+}
+#pdf-report .pr-kpi-sub {
+  font-size: 10px;
+  color: #8090a0;
+  margin-top: 2px;
+}
+#pdf-report .pr-bar-wrap {
+  background: #e8eef6;
+  border-radius: 4px;
+  height: 7px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+#pdf-report .pr-bar {
+  height: 100%;
+  border-radius: 4px;
+  background: #4794ff;
+}
+#pdf-report .pr-hito-block {
+  border: 1px solid #dde6f0;
+  border-radius: 7px;
+  margin-bottom: 7px;
+  overflow: hidden;
+  page-break-inside: avoid;
+}
+#pdf-report .pr-hito-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  gap: 8px;
+}
+#pdf-report .pr-hito-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0a1a35;
+  flex: 1;
+}
+#pdf-report .pr-hito-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: #8090a0;
+}
+#pdf-report .pr-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+#pdf-report .pr-badge-done  { background: #e6f9f0; color: #1a8a50; }
+#pdf-report .pr-badge-proc  { background: #e6f0ff; color: #2060c0; }
+#pdf-report .pr-badge-urgent{ background: #fff3e6; color: #c06010; }
+#pdf-report .pr-badge-block { background: #ffe6e6; color: #c02020; }
+#pdf-report .pr-badge-prog  { background: #f0f0f0; color: #606070; }
+#pdf-report .pr-badge-na    { background: #f4f4f4; color: #909090; }
+#pdf-report .pr-sub-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 12px 5px 24px;
+  border-top: 1px solid #eef2f7;
+  gap: 8px;
+}
+#pdf-report .pr-sub-name {
+  font-size: 11px;
+  color: #3a5070;
+  flex: 1;
+}
+#pdf-report .pr-rubro-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eef2f7;
+}
+#pdf-report .pr-rubro-name {
+  font-size: 12px;
+  color: #0a1a35;
+  flex: 1;
+}
+#pdf-report .pr-rubro-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 40px;
+  text-align: right;
+}
+#pdf-report .pr-nota-box {
+  background: #f8f2e8;
+  border-left: 3px solid #f0b429;
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 11px;
+  color: #5a4010;
+  margin-bottom: 14px;
+}
+#pdf-report .pr-footer {
+  background: #f0f4fa;
+  border-top: 1px solid #dde6f0;
+  padding: 12px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+}
+#pdf-report .pr-footer-left {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: #8090a0;
+  letter-spacing: 1px;
+}
+#pdf-report .pr-footer-right {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: #4794ff;
+}
+#pdf-report .pr-checklist-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid #eef2f7;
+}
+#pdf-report .pr-checklist-lbl { font-size: 12px; color: #0a1a35; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="brand"><span class="brand-dot"></span>Grupo Roma</div>
+  <div class="topbar-tabs">
+    <button class="ttab active" onclick="showPage('home',this)">Resumen</button>
+    <button class="ttab" onclick="showPage('gestion',this)">Gestión</button>
+    <button class="ttab" onclick="showPage('obra',this)">Obra</button>
+    <button class="ttab" onclick="showPage('postventa',this)">Postventa</button>
+    <button class="ttab" onclick="showPage('estrategia',this)">Estrategia</button>
+    <button class="ttab" onclick="showPage('clientes',this)">Clientes</button>
+  </div>
+  <div class="topbar-date">29·04·2026</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE: HOME — RESUMEN GENERAL
+════════════════════════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- Stats -->
+  <div class="grid4" style="margin-bottom:20px">
+    <div class="stat-card">
+      <div class="stat-label">Proyectos activos</div>
+      <div class="stat-num" style="color:var(--text)">15</div>
+      <div class="stat-sub">Gestión + obra en curso</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Urgentes</div>
+      <div class="stat-num" style="color:var(--orange)">5</div>
+      <div class="stat-sub">CM · EN · CEPE · CM2 · VN</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Novedades 25/03</div>
+      <div class="stat-num" style="color:var(--green)">4</div>
+      <div class="stat-sub">VR gas · CDE gas · CM eléctrico · CEPE</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Plazo promedio obra</div>
+      <div class="stat-num" style="color:var(--amber)">6.2</div>
+      <div class="stat-sub">años para permiso prov.</div>
+    </div>
+  </div>
+
+  <!-- Todos los proyectos -->
+  <div class="section-hdr"><h2>Proyectos</h2><span>Tocar para ver detalle</span></div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="text" placeholder="Buscar proyecto, expediente, localidad..." oninput="filterProjects(this.value)" id="proj-search">
+  </div>
+  <div class="chips" id="proj-chips">
+    <button class="chip active" onclick="setFilter('all',this)">Todos</button>
+    <button class="chip" onclick="setFilter('urgente',this)">Urgentes</button>
+    <button class="chip" onclick="setFilter('proceso',this)">En proceso</button>
+    <button class="chip" onclick="setFilter('completo',this)">Completos</button>
+  </div>
+  <div class="grid2 proj-grid" id="proj-grid"></div>
+
+  <!-- Novedades -->
+  <div style="margin-top:28px;margin-bottom:20px">
+    <div class="section-hdr"><h2>Novedades</h2><span>Abril 2026</span></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="card" style="border-color:rgba(74,154,106,.3);display:flex;align-items:flex-start;gap:12px">
+        <span class="badge b-done" style="flex-shrink:0;margin-top:2px">✓ 20/03</span>
+        <div><strong>Clos del Este</strong> — Factibilidad de Gas aprobada por Litoral Gas (20/03/2026).</div>
+      </div>
+      <div class="card" style="border-color:rgba(74,154,106,.3);display:flex;align-items:flex-start;gap:12px">
+        <span class="badge b-done" style="flex-shrink:0;margin-top:2px">✓ 10/03</span>
+        <div><strong>Vitta Río</strong> — Factibilidad de Gas aprobada por Litoral Gas (10/03/2026). Convenio eléctrico EPE aprobado.</div>
+      </div>
+      <div class="card" style="border-color:rgba(80,128,192,.3);display:flex;align-items:flex-start;gap:12px">
+        <span class="badge b-proc" style="flex-shrink:0;margin-top:2px">⟳ 01/03</span>
+        <div><strong>Campo Madero</strong> — Proyecto eléctrico de obra complementaria: salió de EPE Sucursal Rosario y está en Área Técnica Santa Fe (01/03/2026). A la espera de novedades.</div>
+      </div>
+      <div class="card" style="border-color:rgba(201,168,64,.25);display:flex;align-items:flex-start;gap:12px">
+        <span class="badge b-new" style="flex-shrink:0;margin-top:2px">⚑ interno</span>
+        <div><strong>CEPE</strong> — Avance legal-tributario con municipalidad para posesión. <em style="color:var(--red);font-size:11px">⚠ Información interna — no comunicar a clientes.</em></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE: GESTIÓN
+════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-gestion">
+  <div class="section-hdr"><h2>Gestión</h2><span>Hitos por proyecto · Panel 25·03·2026</span></div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="text" placeholder="Buscar proyecto, expediente, hito..." oninput="filterGestion(this.value)">
+  </div>
+  <div class="chips">
+    <button class="chip active" onclick="setGestionFilter('all',this)">Todos</button>
+    <button class="chip" onclick="setGestionFilter('urgente',this)">⚡ Urgente</button>
+    <button class="chip" onclick="setGestionFilter('proceso',this)">🔄 En proceso</button>
+    <button class="chip" onclick="setGestionFilter('done',this)">✅ Completado</button>
+    <button class="chip" onclick="setGestionFilter('block',this)">🔴 Bloqueante</button>
+  </div>
+  <div id="gestion-list"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE: OBRA
+════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-obra">
+  <div class="section-hdr"><h2>Estado de obra</h2><span>Avance por rubro · Ago–Nov 2025</span></div>
+  <div class="chips">
+    <button class="chip active" onclick="setObraFilter('all',this)">Todos</button>
+    <button class="chip" onclick="setObraFilter('100',this)">100% completo</button>
+    <button class="chip" onclick="setObraFilter('parcial',this)">En ejecución</button>
+    <button class="chip" onclick="setObraFilter('bloq',this)">🔴 Bloqueado</button>
+  </div>
+  <div id="obra-list"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE: POSTVENTA
+════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-postventa">
+  <div class="section-hdr"><h2>Postventa</h2><span>Modelos de respuesta · Usar y adaptar</span></div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="text" placeholder="Buscar situación, proyecto, palabra clave..." oninput="filterModelos(this.value)">
+  </div>
+  <div class="chips" id="pv-chips">
+    <button class="chip active" onclick="setPVFilter('all',this)">Todos</button>
+    <button class="chip" onclick="setPVFilter('TODOS',this)">Generales</button>
+    <button class="chip" onclick="setPVFilter('CM',this)">Campo Madero</button>
+    <button class="chip" onclick="setPVFilter('EN',this)">El Naranjo</button>
+    <button class="chip" onclick="setPVFilter('VI',this)">Vitta</button>
+    <button class="chip" onclick="setPVFilter('CEPE',this)">CEPE</button>
+    <button class="chip" onclick="setPVFilter('OR',this)">Orígenes</button>
+    <button class="chip" onclick="setPVFilter('CDE',this)">Clos del Este</button>
+    <button class="chip" onclick="setPVFilter('VR',this)">Vitta Río</button>
+    <button class="chip" onclick="setPVFilter('CZ',this)">CEZA</button>
+  </div>
+  <!-- Glosario rápido -->
+  <div class="card" style="margin-bottom:20px;border-color:var(--border2)">
+    <div class="card-title">Palabras a NUNCA usar</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <span class="badge b-block">Frustración</span>
+      <span class="badge b-block">Estafa</span>
+      <span class="badge b-block">Abandonado</span>
+      <span class="badge b-block">Está parado</span>
+      <span class="badge b-block">Trabado</span>
+      <span class="badge b-block">No depende de nosotros</span>
+      <span class="badge b-block">Incumplimiento</span>
+      <span class="badge b-block">Promesa incumplida</span>
+      <span class="badge b-block">Ya falta poco</span>
+    </div>
+  </div>
+  <div id="modelos-list"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE: ESTRATEGIA
+════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-estrategia">
+  <div class="section-hdr"><h2>Estrategia</h2><span>Foco · Puntos críticos · Acciones clave</span></div>
+  <div id="estrategia-list"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE: CLIENTES
+════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-clientes">
+  <div class="section-hdr"><h2>Clientes sensibles</h2><span>Registro de postventa</span></div>
+  <div class="chips">
+    <button class="chip active" onclick="setClienteFilter('all',this)">Todos</button>
+    <button class="chip" onclick="setClienteFilter('critico',this)">🔴 Crítico</button>
+    <button class="chip" onclick="setClienteFilter('tension',this)">🟡 Tensión</button>
+  </div>
+  <div id="clientes-list"></div>
+</div>
+
+<!-- DETAIL OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeOverlay(event)">
+  <div class="detail-sheet" id="detail-sheet">
+    <div class="detail-header">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:2px;margin-bottom:4px" id="detail-sub"></div>
+        <div class="detail-title" id="detail-title"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button id="btn-export-pdf"
+          style="display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid rgba(71,148,255,0.4);background:rgba(71,148,255,0.1);color:#4794ff;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all .15s"
+          onmouseover="this.style.background='rgba(71,148,255,0.2)'" onmouseout="this.style.background='rgba(71,148,255,0.1)'"
+          onclick="exportInformePDF()">
+          <span style="font-size:13px">⬇</span> Exportar informe
+        </button>
+        <button class="detail-close" onclick="document.getElementById('overlay').classList.remove('open')">✕</button>
+      </div>
+    </div>
+    <div class="detail-tabs" id="detail-tabs"></div>
+    <div class="detail-body" id="detail-body"></div>
+  </div>
+</div>
+
+<!-- INFORME PDF (oculto, solo se activa al imprimir) -->
+<div id="pdf-report" style="display:none"></div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="bnav-btn active" id="bn-home" onclick="showPage('home',this,true)"><span class="bnav-icon">◉</span>Resumen</button>
+  <button class="bnav-btn" id="bn-gestion" onclick="showPage('gestion',this,true)"><span class="bnav-icon">◎</span>Gestión</button>
+  <button class="bnav-btn" id="bn-obra" onclick="showPage('obra',this,true)"><span class="bnav-icon">⬜</span>Obra</button>
+  <button class="bnav-btn" id="bn-postventa" onclick="showPage('postventa',this,true)"><span class="bnav-icon">◈</span>Postventa</button>
+  <button class="bnav-btn" id="bn-estrategia" onclick="showPage('estrategia',this,true)"><span class="bnav-icon">◆</span>Estrategia</button>
+</div>
+
+<script src="./data/proyectos.js"></script>
+<script src="./data/gestion-data.js"></script>
+<script src="./data/modelos.js"></script>
+<script src="./data/estrategia.js"></script>
+<script src="./data/clientes.js"></script>
+<script src="./data/checklist.js"></script>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// LÓGICA DEL DASHBOARD
+// Los datos principales ahora se cargan desde archivos en /data.
+// DATOS
+// ══════════════════════════════════════════════════════════════
+// PROJS se carga desde ./data/proyectos.js
+
+
+// ══════════════════════════════════════════════════════════════
+// DATOS DE GESTIÓN COMPLETA — 19 HITOS POR PROYECTO
+// Fuente: planillas ESTADO_DE_GESTIÓN · Abril 2026
+// est: "done"=Completado · "proc"=En proceso · "urgent"=Urgente
+//      "prog"=Programado · "na"=No requiere/corresponde
+// ══════════════════════════════════════════════════════════════
+// GESTION_DATA se carga desde ./data/gestion-data.js
+ // fin GESTION_DATA
+
+// Asignar gestion a cada proyecto
+PROJS.forEach(p=>{ if(GESTION_DATA[p.id]) p.gestion = GESTION_DATA[p.id]; });
+
+// MODELOS se carga desde ./data/modelos.js
+
+
+// ESTRATEGIA se carga desde ./data/estrategia.js
+
+
+// CLIENTES se carga desde ./data/clientes.js
+
+
+// ══════════════════════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ══════════════════════════════════════════════════════════════
+function pctColor(p){
+  if(p===100) return "var(--green)";
+  if(p>=70)   return "#5a9a4a";
+  if(p>=40)   return "var(--amber)";
+  if(p>0)     return "var(--orange)";
+  return "var(--red)";
+}
+
+function ringHTML(pct,urgente){
+  const C=2*Math.PI*20, off=C-(pct/100)*C, col=urgente?"var(--orange)":pctColor(pct);
+  return `<div class="ring-wrap">
+    <svg width="52" height="52" viewBox="0 0 52 52">
+      <circle class="ring-track" cx="26" cy="26" r="20"/>
+      <circle class="ring-fill" cx="26" cy="26" r="20" stroke="${col}"
+        stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}"/>
+    </svg>
+    <div class="ring-text" style="color:${col}">${pct}%</div>
+  </div>`;
+}
+
+function estBadge(est){
+  const map={
+    done:  {cls:"b-done",  icon:"✅", lbl:"Aprobado"},
+    proc:  {cls:"b-proc",  icon:"🔄", lbl:"En proceso"},
+    urgent:{cls:"b-urgent",icon:"⚡", lbl:"Urgente"},
+    block: {cls:"b-block", icon:"🔴", lbl:"Bloqueante"},
+    na:    {cls:"b-na",    icon:"—",  lbl:"N/A"},
+  };
+  const d=map[est]||map.na;
+  return `<span class="badge ${d.cls}" title="${d.lbl}" style="flex-direction:column;align-items:center;padding:4px 10px;gap:1px">
+    <span style="font-size:13px">${d.icon}</span>
+    <span style="font-size:8px;letter-spacing:.5px">${d.lbl}</span>
+  </span>`;
+}
+
+function nivBadge(niv){
+  const map={"1":"b-done Niv 1","2":"b-proc Niv 2","1-2":"b-proc Niv 1-2",
+             "3":"b-urgent Niv 3","3-4":"b-block Niv 3-4","4":"b-block Niv 4"};
+  const s=map[niv]||"b-na "+niv; const [c,...l]=s.split(" ");
+  return `<span class="badge ${c}">${l.join(" ")}</span>`;
+}
+
+// ── BUILD GESTIÓN TABLE (19 hitos completos de planilla) ────────
+function buildGestionTable(p){
+  const g = p.gestion;
+  if(!g) return '<div style="color:var(--muted);font-size:12px;padding:12px 0">Sin datos de gestión cargados.</div>';
+
+  // Badge compacto inline
+  const EST_MAP = {
+    "done":    {cls:"b-done",   icon:"✅", lbl:"Completado"},
+    "proc":    {cls:"b-proc",   icon:"🔄", lbl:"En proceso"},
+    "urgent":  {cls:"b-urgent", icon:"⚡", lbl:"Urgente"},
+    "block":   {cls:"b-block",  icon:"🔴", lbl:"Bloqueante"},
+    "prog":    {cls:"b-na",     icon:"○",  lbl:"Programado"},
+    "na":      {cls:"b-na",     icon:"—",  lbl:"N/A"},
+  };
+
+  function badge(est){
+    const d = EST_MAP[est] || EST_MAP.na;
+    return `<span class="badge ${d.cls}" style="font-size:9px;padding:2px 7px;white-space:nowrap">${d.icon} ${d.lbl}</span>`;
+  }
+
+  function subRow(item, depth){
+    const d = EST_MAP[item.est] || EST_MAP.na;
+    const bgColor = item.est==="urgent"?"rgba(255,160,60,.07)":item.est==="block"?"rgba(224,85,85,.07)":item.est==="done"?"rgba(46,200,122,.04)":"transparent";
+    const indent = depth * 14;
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px 5px ${10+indent}px;border-bottom:1px solid var(--border);background:${bgColor};gap:8px">
+      <div style="display:flex;align-items:center;gap:6px;flex:1;min-width:0">
+        <span style="color:var(--dim);font-size:9px;flex-shrink:0">${depth>0?"└":"·"}</span>
+        <span style="font-size:11px;color:${item.est==="urgent"?"var(--orange)":item.est==="block"?"var(--red)":item.est==="done"?"var(--muted)":"var(--text)"};line-height:1.3">${item.nombre}</span>
+        ${item.exp?`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--dim);flex-shrink:0">${item.exp}</span>`:""}
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
+        ${item.ini?`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--dim)">${item.ini}${item.fin?" → "+item.fin:""}</span>`:""}
+        ${badge(item.est)}
+      </div>
+    </div>`;
+  }
+
+  function hitoBlock(hito, num){
+    const d = EST_MAP[hito.est] || EST_MAP.na;
+    const headerBg = hito.est==="urgent"?"rgba(255,160,60,.12)":hito.est==="block"?"rgba(224,85,85,.12)":hito.est==="done"?"rgba(46,200,122,.07)":"var(--bg3)";
+    const borderCol = hito.est==="urgent"?"var(--orange)":hito.est==="block"?"var(--red)":hito.est==="done"?"var(--green)":"var(--border2)";
+    const subs = hito.sub || [];
+    return `<div style="border:1px solid ${borderCol};border-radius:8px;overflow:hidden;margin-bottom:8px">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:${headerBg};gap:8px;cursor:default">
+        <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">
+          <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--dim);flex-shrink:0">${num}</span>
+          <span style="font-size:12px;font-weight:600;color:var(--text)">${hito.nombre}</span>
+          ${hito.plazo?`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--dim)">${hito.plazo}</span>`:""}
+          ${hito.exp?`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--dim)">${hito.exp}</span>`:""}
+        </div>
+        <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
+          ${hito.ini?`<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--dim)">${hito.ini}${hito.fin?" → "+hito.fin:""}</span>`:""}
+          ${badge(hito.est)}
+        </div>
+      </div>
+      ${subs.length ? subs.map(s=>{
+        const sub2 = s.sub || [];
+        return subRow(s,1) + sub2.map(ss=>subRow(ss,2)).join("");
+      }).join("") : ""}
+    </div>`;
+  }
+
+  // Contar estados para el resumen
+  const allItems = [g, ...(g.flatMap?g.flatMap(h=>[h,...(h.sub||[]),...(h.sub||[]).flatMap(s=>s.sub||[])]):[])];
+  const counts = {done:0, proc:0, urgent:0, block:0, prog:0, na:0};
+  g.forEach(h=>{
+    if(counts[h.est]!==undefined) counts[h.est]++;
+    (h.sub||[]).forEach(s=>{
+      if(counts[s.est]!==undefined) counts[s.est]++;
+      (s.sub||[]).forEach(ss=>{ if(counts[ss.est]!==undefined) counts[ss.est]++; });
+    });
+  });
+
+  const resumen = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;padding:10px 12px;background:var(--bg3);border-radius:8px;border:1px solid var(--border)">
+    <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);width:100%;letter-spacing:1.5px;margin-bottom:2px">RESUMEN DE ACCIONES</span>
+    ${counts.done?`<span class="badge b-done">✅ ${counts.done} completados</span>`:""}
+    ${counts.proc?`<span class="badge b-proc">🔄 ${counts.proc} en proceso</span>`:""}
+    ${counts.urgent?`<span class="badge b-urgent">⚡ ${counts.urgent} urgentes</span>`:""}
+    ${counts.block?`<span class="badge b-block">🔴 ${counts.block} bloqueantes</span>`:""}
+    ${counts.prog?`<span class="badge b-na">○ ${counts.prog} programados</span>`:""}
+    ${counts.na?`<span class="badge b-na">— ${counts.na} N/A</span>`:""}
+  </div>`;
+
+  return resumen + g.map((h,i)=>hitoBlock(h, (i+1).toString().padStart(2,"0"))).join("");
+}
+
+// ── BUILD HOME PROJECT GRID ──────────────────────────────────
+function buildProjGrid(list){
+  const g=document.getElementById("proj-grid");
+  g.innerHTML=list.map(p=>{
+    const avg=Math.round((p.avanceGestion+(p.avanceObra??p.avanceGestion))/2);
+    return `
+    <div class="proj-card ${p.urgente?"urgent":""}" onclick="openDetail('${p.id}')">
+      ${ringHTML(avg,p.urgente)}
+      <div class="proj-info">
+        <div class="proj-name">${p.nombre}</div>
+        <div class="proj-meta">${p.loc}${p.ha?` · ${p.ha}ha`:""}${p.lotes?` · ${p.lotes} lotes`:""}${p.urgente?' · <span style="color:var(--orange)">⚡ urgente</span>':""}</div>
+        ${p.nota?`<div style="font-size:11px;color:var(--amber);margin-top:4px">${p.nota}</div>`:""}
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:4px">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--dim);width:46px;flex-shrink:0">GESTIÓN</span>
+            <div class="mini-bar-wrap" style="flex:1;width:auto"><div class="mini-bar" style="width:${p.avanceGestion}%;background:${pctColor(p.avanceGestion)}"></div></div>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:${pctColor(p.avanceGestion)};width:28px;text-align:right">${p.avanceGestion}%</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--dim);width:46px;flex-shrink:0">OBRA</span>
+            <div class="mini-bar-wrap" style="flex:1;width:auto"><div class="mini-bar" style="width:${p.avanceObra??0}%;background:${pctColor(p.avanceObra??0)}"></div></div>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:${pctColor(p.avanceObra??0)};width:28px;text-align:right">${p.avanceObra??0}%</span>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:1px">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--muted)">${p.entrega}</span>
+          </div>
+        </div>
+      </div>
+    </div>`}).join("");
+}
+buildProjGrid(PROJS);
+
+// ── OPEN DETAIL ─────────────────────────────────────────────
+function openDetail(id){
+  _currentProjId = id;
+  const p=PROJS.find(x=>x.id===id); if(!p) return;
+  const avg=Math.round((p.avanceGestion+(p.avanceObra??p.avanceGestion))/2);
+  document.getElementById("detail-sub").textContent=p.loc+(p.ha?` · ${p.ha}ha`:""+(p.lotes?` · ${p.lotes} lotes`:""));
+  document.getElementById("detail-title").textContent=p.nombre;
+
+  // Tabs
+  const hasMasterplan=!!p.masterplan;
+  const CHAT_IA_LINKS={
+    "CEPE": "https://notebooklm.google.com/notebook/107c0e95-ec2a-43f4-ac03-99329c988ec8",
+    "CM":   "https://notebooklm.google.com/notebook/8b1faa8b-d371-4417-bdea-6cbadd51cb36",
+    "EN2":  "https://notebooklm.google.com/notebook/db6e06d5-e77c-402b-a3c9-97c550c85563",
+    "EN":   "https://notebooklm.google.com/notebook/f79f9ea8-5025-4368-a26c-a020c3b69c9f",
+    "OR":   "https://notebooklm.google.com/notebook/70dcf3ac-1bd9-4205-9195-3a43e33bad01",
+  };
+  const hasChatIA=!!(CHAT_IA_LINKS[id]);
+  const tabs=["Gestión","Obra","Modelos","Pendientes",...(hasMasterplan?["Masterplan"]:[]),...(hasChatIA?["🤖 Chat IA"]:[])];
+  document.getElementById("detail-tabs").innerHTML=tabs.map((t,i)=>
+    `<button class="dtab ${i===0?"active":""}" onclick="switchDTab(${i},this)">${t}</button>`
+  ).join("");
+
+  // Panel 0: Gestión — tabla completa 19 hitos
+  const gHeader=`<div style="display:flex;gap:10px;margin-bottom:14px;padding:10px 14px;background:var(--bg3);border-radius:8px">
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--dim);width:52px">GESTIÓN</span>
+        <div style="flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden"><div style="height:100%;width:${p.avanceGestion}%;background:${pctColor(p.avanceGestion)};border-radius:3px"></div></div>
+        <span style="font-family:'DM Mono',monospace;font-size:10px;color:${pctColor(p.avanceGestion)};width:30px;text-align:right">${p.avanceGestion}%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--dim);width:52px">OBRA</span>
+        <div style="flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden"><div style="height:100%;width:${p.avanceObra??0}%;background:${pctColor(p.avanceObra??0)};border-radius:3px"></div></div>
+        <span style="font-family:'DM Mono',monospace;font-size:10px;color:${pctColor(p.avanceObra??0)};width:30px;text-align:right">${p.avanceObra??0}%</span>
+      </div>
+    </div>
+  </div>`;
+  let g = gHeader + buildGestionTable(p);
+
+  // Panel 1: Obra — tabla rubro / barra+% / observaciones
+  let o;
+  if(!p.obra||!p.obra.length){
+    o='<div style="color:var(--muted);font-size:12px;padding:12px 0">Sin datos de obra registrados.</div>';
+  } else {
+    // Calcular % total ponderado (promedio simple de rubros con valor)
+    const rubrosValidos = p.obra.filter(r=>r.p!==null&&r.p!==undefined);
+    const totalPct = rubrosValidos.length ? Math.round(rubrosValidos.reduce((s,r)=>s+r.p,0)/rubrosValidos.length) : 0;
+    const totalCol = totalPct===100?"var(--green)":totalPct>=70?"#3aaa70":totalPct>=40?"var(--amber)":totalPct>0?"var(--orange)":"var(--red)";
+
+    function pctCol(p){ return p===100?"var(--green)":p>=70?"#3aaa70":p>=40?"var(--amber)":p>0?"var(--orange)":"var(--red)"; }
+
+    const tableRows = p.obra.map(r=>{
+      const col = pctCol(r.p);
+      const bgStripe = r.p===100?"rgba(46,200,122,.05)":r.p===0?"rgba(224,85,85,.03)":"transparent";
+      return `<tr style="border-bottom:1px solid var(--border);background:${bgStripe}">
+        <td style="padding:9px 12px;font-size:12px;font-weight:500;color:var(--text);width:38%;vertical-align:middle">${r.r}</td>
+        <td style="padding:9px 10px;width:28%;vertical-align:middle">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;min-width:60px">
+              <div style="width:${r.p}%;height:100%;background:${col};border-radius:3px;transition:width .6s ease"></div>
+            </div>
+            <span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:${col};width:36px;text-align:right;flex-shrink:0">${r.p}%</span>
+          </div>
+        </td>
+        <td style="padding:9px 12px;font-size:11px;color:var(--muted);vertical-align:middle;line-height:1.4">${r.nota||'—'}</td>
+      </tr>`;
+    }).join("");
+
+    o = `
+      <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px">
+        <table style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr style="background:var(--bg3);border-bottom:2px solid var(--border2)">
+              <th style="padding:9px 12px;text-align:left;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--dim);font-weight:600;text-transform:uppercase">RUBRO</th>
+              <th style="padding:9px 10px;text-align:left;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--dim);font-weight:600;text-transform:uppercase">AVANCE</th>
+              <th style="padding:9px 12px;text-align:left;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--dim);font-weight:600;text-transform:uppercase">OBSERVACIONES</th>
+            </tr>
+          </thead>
+          <tbody>${tableRows}</tbody>
+          <tfoot>
+            <tr style="background:var(--bg3);border-top:2px solid var(--border2)">
+              <td style="padding:10px 12px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--dim);font-weight:600;text-transform:uppercase">TOTAL OBRA</td>
+              <td style="padding:10px 10px">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="flex:1;height:8px;background:var(--bg2);border-radius:4px;overflow:hidden;min-width:60px">
+                    <div style="width:${totalPct}%;height:100%;background:${totalCol};border-radius:4px;transition:width .6s ease"></div>
+                  </div>
+                  <span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:800;color:${totalCol};width:36px;text-align:right;flex-shrink:0">${totalPct}%</span>
+                </div>
+              </td>
+              <td style="padding:10px 12px;font-size:10px;color:var(--muted)">${rubrosValidos.filter(r=>r.p===100).length} de ${rubrosValidos.length} rubros completados · ${rubrosValidos.filter(r=>r.p>0&&r.p<100).length} en ejecución · ${rubrosValidos.filter(r=>r.p===0).length} pendientes</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>`;
+  }
+
+  // Panel 2: Modelos de respuesta del proyecto
+  const mods=MODELOS.filter(m=>m.id===id||m.id==="TODOS");
+  let m=mods.map((mod,i)=>`
+    <div class="modelo-card" id="dm${id}${i}">
+      <div class="modelo-head" onclick="toggleModelo('dm${id}${i}')">
+        ${nivBadge(mod.niv)}
+        <div class="modelo-sit">${mod.sit}</div>
+        <span class="badge b-na" style="font-size:8px">${mod.canal}</span>
+        <span class="modelo-chevron">›</span>
+      </div>
+      <div class="modelo-body">
+        <div class="modelo-text">${mod.texto}</div>
+        ${mod.nota?`<div class="modelo-nota">💡 ${mod.nota}</div>`:""}
+        <button class="copy-btn" onclick="copyText('dm${id}${i}')">◈ Copiar texto</button>
+      </div>
+    </div>`).join("")
+    || '<div style="color:var(--muted);font-size:12px;padding:12px 0">Sin modelos específicos.</div>';
+
+  // Panel 3: Tareas pendientes (checklist)
+  // CHECKLIST se carga desde ./data/checklist.js
+
+  // Mapping from hito names/etapas to checklist keys
+  function hitoKey(h){
+    const n=h.nombre.toLowerCase(), e=(h.etapa||"").toLowerCase();
+    if(n.includes("uso conforme")) return "uso_conforme";
+    if(n.includes("convenio urban")) return "conv_urb";
+    if(n.includes("ch1")||n==="ch1") return "ch1";
+    if(n.includes("ch2")||n==="ch2") return "ch2";
+    if(n.includes("convenio el")||n.includes("aprobación epe")||n.includes("aprobación cooperativa")) return "conv_elec";
+    if(n.includes("cat")&&(e.includes("ambiental")||n.includes("categoriz"))) return "cat";
+    if(n.includes("eia")||n.includes("estudio de impacto")) return "eia";
+    if(n.includes("recepción")||n.includes("recepcion")) return "recepcion";
+    if(n.includes("catastro")||n.includes("inscripción")) return "catastro";
+    return null;
+  }
+  const hitoMap={};
+  (p.hitos||[]).forEach(h=>{const k=hitoKey(h); if(k) hitoMap[k]=h.est;});
+
+  const clRows=CHECKLIST.map(item=>{
+    const est=hitoMap[item.key];
+    let icon,color,label;
+    if(!est||est==="na"){icon="—";color="var(--dim)";label="No aplica / sin datos";}
+    else if(est==="done"){icon="✅";color="var(--green)";label="Aprobado";}
+    else if(est==="proc"){icon="🔄";color="var(--blue)";label="En proceso";}
+    else if(est==="urgent"){icon="⚡";color="var(--orange)";label="Urgente";}
+    else if(est==="block"){icon="🔴";color="var(--red)";label="Bloqueante";}
+    else {icon="🔄";color="var(--blue)";label="En proceso";}
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--text)">${item.lbl}</div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:14px">${icon}</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:${color}">${label}</span>
+      </div>
+    </div>`;
+  }).join("");
+
+  const pendTotal=CHECKLIST.filter(item=>{const e=hitoMap[item.key]; return e&&e!=="done"&&e!=="na";}).length;
+  const doneTotal=CHECKLIST.filter(item=>hitoMap[item.key]==="done").length;
+  const pct=Math.round((doneTotal/CHECKLIST.length)*100);
+
+  // Pendientes específicos del proyecto (campo p.pendientes)
+  const PRIO_META={
+    critica:{lbl:"🔴 CRÍTICA", col:"#f05858", bg:"rgba(240,88,88,0.08)", border:"rgba(240,88,88,0.25)"},
+    alta:   {lbl:"🟠 ALTA",    col:"#f0a040", bg:"rgba(240,160,64,0.08)", border:"rgba(240,160,64,0.25)"},
+    media:  {lbl:"🟡 MEDIA",   col:"#e8c84a", bg:"rgba(232,200,74,0.06)", border:"rgba(232,200,74,0.2)"},
+    baja:   {lbl:"⚪ BAJA",    col:"var(--muted)", bg:"rgba(255,255,255,0.03)", border:"var(--border)"},
+  };
+  let proyPendHtml = "";
+  if(p.pendientes && p.pendientes.length){
+    // Agrupar por área
+    const areaOrder=["Gestión","Municipalidad","Eléctrico","Cloacas","Agua","Obra","Comercial"];
+    const byArea={};
+    p.pendientes.forEach(item=>{
+      const a=item.area||"Otros";
+      if(!byArea[a]) byArea[a]=[];
+      byArea[a].push(item);
+    });
+    const areas=[...areaOrder.filter(a=>byArea[a]),...Object.keys(byArea).filter(a=>!areaOrder.includes(a))];
+    proyPendHtml = `
+      <div style="margin-top:20px">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+          <span>● Puntos a resolver · posesión</span>
+          <span style="background:var(--orange);color:#fff;border-radius:10px;padding:1px 7px;font-size:8px">${p.pendientes.length}</span>
+        </div>
+        ${areas.map(area=>`
+          <div style="margin-bottom:14px">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--blue);text-transform:uppercase;margin-bottom:6px;padding:4px 0;border-bottom:1px solid rgba(71,148,255,0.2)">${area}</div>
+            ${byArea[area].map(item=>{
+              const pm=PRIO_META[item.prio]||PRIO_META.baja;
+              return `<div style="background:${pm.bg};border:1px solid ${pm.border};border-radius:8px;padding:10px 12px;margin-bottom:6px">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px">
+                  <div style="font-size:12px;font-weight:600;color:var(--text);line-height:1.4">${item.titulo}</div>
+                  <span style="font-family:'DM Mono',monospace;font-size:8px;color:${pm.col};white-space:nowrap;flex-shrink:0;margin-top:1px">${pm.lbl}</span>
+                </div>
+                <div style="font-size:11px;color:var(--muted);line-height:1.55">${item.detalle}</div>
+              </div>`;
+            }).join("")}
+          </div>`).join("")}
+      </div>`;
+  }
+
+  const pnl=`<div style="margin-bottom:14px;padding:10px 14px;background:var(--bg3);border-radius:8px;display:flex;align-items:center;gap:12px">
+    <div style="flex:1">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.5px;margin-bottom:4px">CHECKLIST GESTIÓN</div>
+      <div style="font-size:12px;color:var(--text)">${doneTotal} de ${CHECKLIST.length} hitos completados · <span style="color:${pendTotal>0?"var(--amber)":"var(--green)"}">${pendTotal} pendientes</span></div>
+    </div>
+    <div style="font-family:'DM Serif Display',serif;font-size:28px;color:${pct===100?"var(--green)":pct>=60?"var(--amber)":"var(--orange)"}">${pct}%</div>
+  </div>
+  ${clRows}
+  ${proyPendHtml}`;
+
+  // Panel 4: Masterplan interactivo (solo si el proyecto lo tiene)
+  let mp="";
+  if(hasMasterplan){
+    const mp_data = p.masterplan;
+    const total = p.lotes;
+
+    // Datos de lotes por categoría — CEPE 448 lotes según masterplan
+    // Basado en el plano 25/03/2026
+    const CEPE_STATS = [
+      {lbl:"Vendidos",     color:"#e8c84a", n:298, desc:"Lotes vendidos a clientes"},
+      {lbl:"VRA",          color:"#c978c8", n:22,  desc:"Venta con reserva de acción"},
+      {lbl:"Roma",         color:"#e07830", n:14,  desc:"Lotes en cartera Roma"},
+      {lbl:"Patr. V. Norte",color:"#a8d070",n:12,  desc:"Patrimonio Vitta Norte"},
+      {lbl:"Patr. TDA",    color:"#f0b8c0", n:8,   desc:"Patrimonio Tierra de Autores"},
+      {lbl:"Pablo C",      color:"#58d8e8", n:15,  desc:"Asignación Pablo C"},
+      {lbl:"Bloqueado",    color:"#e05858", n:6,   desc:"Lotes con restricción legal"},
+      {lbl:"Sixto",        color:"#507850", n:9,   desc:"Asignación Sixto"},
+      {lbl:"Patr. Clos",   color:"#78b878", n:11,  desc:"Patrimonio Clos del Este"},
+      {lbl:"Patr. EN2",    color:"#b89878", n:8,   desc:"Patrimonio El Naranjo 2"},
+      {lbl:"Patr. Vita GL",color:"#8898c8", n:10,  desc:"Patrimonio Vitta General Lagos"},
+      {lbl:"Cesiones",     color:"#d0d0d0", n:14,  desc:"Lotes cedidos"},
+      {lbl:"Patr. Zavalla",color:"#f0f0e0", n:7,   desc:"Patrimonio Zavalla"},
+      {lbl:"Patr. CM1",    color:"#e8e070", n:10,  desc:"Patrimonio Campo Madero 1"},
+      {lbl:"Patr. Eco P.", color:"#a08878", n:4,   desc:"Patrimonio Eco Pueblo"},
+    ];
+    const totalLotes = 448; // según masterplan oficial
+
+    // Calcular totales agrupados
+    const vendidos   = CEPE_STATS.find(s=>s.lbl==="Vendidos").n;
+    const bloqueados = CEPE_STATS.find(s=>s.lbl==="Bloqueado").n;
+    const cesiones   = CEPE_STATS.find(s=>s.lbl==="Cesiones").n;
+    const patrimonio = CEPE_STATS.filter(s=>s.lbl.startsWith("Patr.")).reduce((a,b)=>a+b.n,0);
+    const otros      = totalLotes - vendidos - bloqueados - cesiones - patrimonio -
+                       CEPE_STATS.find(s=>s.lbl==="Roma").n -
+                       CEPE_STATS.find(s=>s.lbl==="VRA").n;
+
+    // KPIs top
+    const kpis = [
+      {lbl:"Total lotes",  val:totalLotes, col:"var(--text)"},
+      {lbl:"Vendidos",     val:vendidos,   col:"#e8c84a", pct:Math.round(vendidos/totalLotes*100)},
+      {lbl:"Bloqueados",   val:bloqueados, col:"var(--red)",pct:Math.round(bloqueados/totalLotes*100)},
+      {lbl:"Patrimonio",   val:patrimonio, col:"var(--blue)",pct:Math.round(patrimonio/totalLotes*100)},
+    ];
+
+    const kpiHtml = kpis.map(k=>`
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;text-align:center">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px;text-transform:uppercase">${k.lbl}</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:26px;color:${k.col};line-height:1">${k.val}</div>
+        ${k.pct!==undefined?`<div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px">${k.pct}%</div>`:""}
+      </div>`).join("");
+
+    // Barra apilada visual
+    const barSegments = CEPE_STATS.map(s=>`
+      <div title="${s.lbl}: ${s.n} lotes (${Math.round(s.n/totalLotes*100)}%)"
+           style="flex:${s.n};background:${s.color};height:100%;min-width:2px;cursor:pointer;transition:opacity .15s"
+           onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'"
+           onclick="document.getElementById('mp-selected').textContent='${s.lbl}: ${s.n} lotes · ${Math.round(s.n/totalLotes*100)}% · ${s.desc}'">
+      </div>`).join("");
+
+    // Grid de referencias con stats
+    const refsHtml = CEPE_STATS.map(s=>`
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);cursor:pointer;border-radius:4px;padding:6px 4px"
+           onclick="document.getElementById('mp-selected').innerHTML='<strong style=color:${s.color}>${s.lbl}</strong> &nbsp;·&nbsp; ${s.n} lotes &nbsp;·&nbsp; ${Math.round(s.n/totalLotes*100)}% del total &nbsp;·&nbsp; <span style=color:var(--muted)>${s.desc}</span>'"
+           onmouseover="this.style.background='rgba(255,255,255,.04)'" onmouseout="this.style.background='transparent'">
+        <div style="width:14px;height:14px;border-radius:3px;flex-shrink:0;background:${s.color};border:1px solid rgba(255,255,255,.2)"></div>
+        <div style="flex:1;font-size:12px;color:var(--text)">${s.lbl}</div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:${s.color};min-width:24px;text-align:right">${s.n}</div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);min-width:32px;text-align:right">${Math.round(s.n/totalLotes*100)}%</div>
+      </div>`).join("");
+
+    mp=`
+      <div>
+        <!-- KPIs -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px">
+          ${kpiHtml}
+        </div>
+
+        <!-- Barra apilada -->
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase">Distribución de lotes</div>
+        <div style="display:flex;height:18px;border-radius:6px;overflow:hidden;margin-bottom:8px;border:1px solid var(--border)">
+          ${barSegments}
+        </div>
+        <div id="mp-selected" style="font-size:11px;color:var(--muted);min-height:18px;margin-bottom:14px;padding:6px 10px;background:var(--bg3);border-radius:5px">
+          → Tocá un segmento de la barra o una categoría de la lista para ver el detalle
+        </div>
+
+        <!-- Lista de categorías -->
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase">Categorías · tocar para ver detalle</div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0 10px;margin-bottom:14px">
+          ${refsHtml}
+        </div>
+
+        <!-- Plano -->
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase">Masterplan · 25·03·2026 · Podés hacer zoom</div>
+        <div style="position:relative;width:100%;padding-top:70%;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:var(--bg3)">
+          <iframe src="${mp_data.url}"
+                  style="position:absolute;top:0;left:0;width:100%;height:100%;border:none"
+                  allowfullscreen loading="lazy">
+          </iframe>
+        </div>
+        <div style="font-size:10px;color:var(--dim);margin-top:6px;text-align:center">
+          Nota: los números de lotes y % son estimaciones basadas en el plano 25·03·2026. Actualizar cuando haya nueva información comercial.
+        </div>
+      </div>`;
+  }
+
+  // Panel Chat IA — proyectos con cuaderno NotebookLM
+  let chatIA = "";
+  if(hasChatIA){
+    const chatUrl = CHAT_IA_LINKS[id];
+    chatIA = `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;padding:8px 0 4px">
+        <!-- Header descriptivo -->
+        <div style="width:100%;background:linear-gradient(135deg,#0f2348 0%,#162338 100%);border:1px solid rgba(71,148,255,0.25);border-radius:12px;padding:18px 20px;display:flex;align-items:flex-start;gap:14px">
+          <div style="font-size:32px;line-height:1;flex-shrink:0">🤖</div>
+          <div>
+            <div style="font-family:'DM Serif Display',serif;font-size:18px;color:#fff;margin-bottom:4px">Asistente IA · CEPE</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.6">
+              Consultá el cuaderno inteligente de CEPE en NotebookLM. Podés hacer preguntas sobre el proyecto, los hitos, la gestión, el estado de obra y más — el asistente responde con base en los documentos del proyecto.
+            </div>
+          </div>
+        </div>
+
+        <!-- Ejemplos de consulta -->
+        <div style="width:100%">
+          <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px">Ejemplos de consultas</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            ${[
+              "¿Cuál es el estado actual de la red eléctrica?",
+              "¿Qué hitos de gestión están pendientes?",
+              "¿Cuándo es la entrega estimada del proyecto?",
+              "¿Cuál es el avance de obra en infraestructura?"
+            ].map(q=>`
+              <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:11px;color:var(--muted);line-height:1.4;display:flex;align-items:flex-start;gap:6px">
+                <span style="color:var(--blue);font-size:14px;line-height:1;flex-shrink:0">›</span>
+                <span>${q}</span>
+              </div>`).join("")}
+          </div>
+        </div>
+
+        <!-- Botón principal -->
+        <a href="${chatUrl}" target="_blank" rel="noopener noreferrer"
+           style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#4794ff,#1a56cc);color:#fff;text-decoration:none;padding:14px 28px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;letter-spacing:.3px;box-shadow:0 4px 20px rgba(71,148,255,0.35);transition:opacity .15s;width:100%;justify-content:center;max-width:360px"
+           onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
+          <span style="font-size:20px">🤖</span>
+          Abrir Chat IA · CEPE
+          <span style="font-size:16px;opacity:.7">↗</span>
+        </a>
+
+        <!-- Nota -->
+        <div style="width:100%;background:var(--amber-l);border:1px solid rgba(240,180,41,0.2);border-radius:8px;padding:10px 14px;display:flex;align-items:flex-start;gap:8px">
+          <span style="color:var(--amber);flex-shrink:0">💡</span>
+          <div style="font-size:11px;color:var(--amber);line-height:1.5">
+            El asistente accede solo a los documentos cargados en el cuaderno de CEPE. Se abre en una nueva pestaña — necesitás tener acceso a NotebookLM con tu cuenta de Google.
+          </div>
+        </div>
+      </div>`;
+  }
+
+  document.getElementById("detail-body").innerHTML=`
+    <div class="dpanel active" id="dp0">${g}</div>
+    <div class="dpanel" id="dp1">${o}</div>
+    <div class="dpanel" id="dp2">${m}</div>
+    <div class="dpanel" id="dp3">${pnl}</div>
+    ${hasMasterplan?`<div class="dpanel" id="dp4">${mp}</div>`:""}
+    ${hasChatIA?`<div class="dpanel" id="dp${hasMasterplan?5:4}">${chatIA}</div>`:""}`;
+
+  document.getElementById("overlay").classList.add("open");
+}
+
+function closeOverlay(e){
+  if(e.target===document.getElementById("overlay"))
+    document.getElementById("overlay").classList.remove("open");
+}
+
+function switchDTab(idx,btn){
+  document.querySelectorAll(".dtab").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  document.querySelectorAll(".dpanel").forEach((p,i)=>p.classList.toggle("active",i===idx));
+}
+
+// ── GESTION PAGE ─────────────────────────────────────────────
+function buildGestion(list){
+  const el=document.getElementById("gestion-list");
+  el.innerHTML=list.map(p=>`
+    <div class="card" style="margin-bottom:12px" data-id="${p.id}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;cursor:pointer" onclick="openDetail('${p.id}')">
+        <div>
+          <div style="font-size:14px;font-weight:600">${p.nombre}</div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted)">${p.loc} · Gestión ${p.avanceGestion}% · Obra ${p.avanceObra??0}%</div>
+        </div>
+        <span style="color:var(--muted)">↗</span>
+      </div>
+      ${(p.hitos||[]).map(h=>`
+        <div class="hito-row">
+          <div class="hito-left">
+            <div class="hito-name">${h.nombre}</div>
+            <div class="hito-detail">${h.etapa||""}${h.exp?` · ${h.exp}`:""}${h.ini?` · ${h.ini}`:""}${h.fin?` → ${h.fin}`:""}</div>
+            ${h.obs?`<div style="font-size:10px;color:var(--amber);margin-top:2px">${h.obs}</div>`:""}
+          </div>
+          <div class="hito-right">${estBadge(h.est)}</div>
+        </div>`).join("")}
+    </div>`).join("");
+}
+buildGestion(PROJS);
+
+// ── OBRA PAGE ─────────────────────────────────────────────────
+function buildObra(list){
+  const el=document.getElementById("obra-list");
+  const withObra=list.filter(p=>p.obra&&p.obra.length>0);
+
+  el.innerHTML=withObra.map(p=>{
+    // Calcular avance promedio
+    const rubros=p.obra.filter(r=>r.p!==null&&r.p!==undefined);
+    const avg=rubros.length?Math.round(rubros.reduce((s,r)=>s+r.p,0)/rubros.length):0;
+    const done100=p.obra.filter(r=>r.p===100).length;
+    const enEjec=p.obra.filter(r=>r.p>0&&r.p<100).length;
+    const pend=p.obra.filter(r=>r.p===0||r.p===null).length;
+
+    const rows=p.obra.map(r=>{
+      const col=r.p===100?"var(--green)":r.p>=70?"#3aaa70":r.p>=40?"var(--amber)":r.p>0?"var(--orange)":"var(--dim)";
+      const lbl=r.p===100?"✓":r.p===0?"—":`${r.p}%`;
+      const barW=r.p||0;
+      return `<div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+        <div>
+          <div style="font-size:12px;color:var(--text)">${r.r}</div>
+          ${r.nota&&r.nota!=="Pendiente"&&r.nota!=="Ejecutada"&&r.nota!=="Ejecutadas"&&r.nota!=="Ejecutados"&&r.nota!=="Ejecutado"?
+            `<div style="font-size:10px;color:var(--muted)">${r.nota}</div>`:""}
+          ${r.p>0&&r.p<100?`<div style="margin-top:4px;height:2px;background:var(--bg);border-radius:1px;overflow:hidden;width:120px">
+            <div style="width:${barW}%;height:100%;background:${col}"></div></div>`:""}
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;font-weight:600;color:${col};white-space:nowrap;min-width:36px;text-align:right">${lbl}</div>
+      </div>`;
+    }).join("");
+
+    return `<div class="card" style="margin-bottom:12px;cursor:pointer" onclick="openDetail('${p.id}')">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div>
+          <div style="font-size:14px;font-weight:600;color:#fff">${p.nombre}</div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px">${p.loc}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'DM Serif Display',serif;font-size:20px;color:${avg===100?"var(--green)":avg>50?"var(--blue)":avg>20?"var(--amber)":"var(--orange)"}">${avg}%</div>
+          <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--muted)">promedio</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:10px">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--green)">✓ ${done100}</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--blue)">◎ ${enEjec}</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--dim)">○ ${pend}</span>
+      </div>
+      ${rows}
+    </div>`;
+  }).join("");
+}
+buildObra(PROJS);
+
+// ── MODELOS PAGE ─────────────────────────────────────────────
+function buildModelos(list){
+  const el=document.getElementById("modelos-list");
+  el.innerHTML=list.map((mod,i)=>`
+    <div class="modelo-card" id="ml${i}" data-id="${mod.id}" data-kwds="${mod.kwds||""}" data-sit="${mod.sit}">
+      <div class="modelo-head" onclick="toggleModelo('ml${i}')">
+        ${nivBadge(mod.niv)}
+        <div style="flex:1;min-width:0">
+          <div class="modelo-sit">${mod.sit}</div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px">${mod.proj} · ${mod.canal}</div>
+        </div>
+        <span class="modelo-chevron">›</span>
+      </div>
+      <div class="modelo-body">
+        <div class="modelo-text">${mod.texto}</div>
+        ${mod.nota?`<div class="modelo-nota">💡 ${mod.nota}</div>`:""}
+        <button class="copy-btn" onclick="copyText('ml${i}')">◈ Copiar texto</button>
+      </div>
+    </div>`).join("");
+}
+buildModelos(MODELOS);
+
+// ── ESTRATEGIA PAGE ──────────────────────────────────────────
+const PRIO_COLORS={urgente:"var(--orange)",media:"var(--amber)",proceso:"var(--blue)",riesgo:"var(--red)"};
+const PRIO_LABELS={urgente:"🔴 URGENTE",media:"🟡 MEDIA",proceso:"🟢 PROCESO",riesgo:"⚠️ RIESGO"};
+document.getElementById("estrategia-list").innerHTML=ESTRATEGIA.map(s=>`
+  <div class="strat-row">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <span class="badge" style="background:${PRIO_COLORS[s.prio]}22;color:${PRIO_COLORS[s.prio]}">${PRIO_LABELS[s.prio]}</span>
+      <div class="strat-proj">${s.proj}</div>
+    </div>
+    <div class="strat-foco">🎯 ${s.foco}</div>
+    <div class="strat-critico">${s.critico}</div>
+    <div class="strat-accion">→ ${s.accion}</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">⚠ ${s.riesgo}</div>
+  </div>`).join("");
+
+// ── CLIENTES PAGE ────────────────────────────────────────────
+function buildClientes(list){
+  const el=document.getElementById("clientes-list");
+  el.innerHTML=list.map(c=>`
+    <div class="cliente-row" data-est="${c.est}">
+      <div class="cliente-estado" style="background:${c.est==="critico"?"var(--red)":"var(--amber)"}"></div>
+      <div class="cliente-info">
+        <div class="cliente-proj">${c.proj} · Lote ${c.lote}</div>
+        <div class="cliente-name">${c.nom}</div>
+        <div class="cliente-perf">${c.perf}</div>
+        <div class="cliente-prot">→ ${c.prot}</div>
+      </div>
+    </div>`).join("");
+}
+buildClientes(CLIENTES);
+
+// ══════════════════════════════════════════════════════════════
+// FILTROS Y BÚSQUEDA
+// ══════════════════════════════════════════════════════════════
+let projFilter="all", gestionFilter="all", obraFilter="all", pvFilter="all", clienteFilter="all";
+
+function setFilter(f,btn){
+  projFilter=f;
+  document.querySelectorAll("#proj-chips .chip").forEach(c=>c.classList.remove("active"));
+  btn.classList.add("active");
+  applyProjFilters();
+}
+function filterProjects(q){
+  document.getElementById("proj-search").value=q;
+  applyProjFilters(q);
+}
+function applyProjFilters(q=""){
+  q=q.toLowerCase();
+  let list=PROJS.filter(p=>{
+    const avg=Math.round((p.avanceGestion+(p.avanceObra??p.avanceGestion))/2);
+    const matchFilter=projFilter==="all"||(projFilter==="urgente"&&p.urgente)||(projFilter==="proceso"&&avg<100&&!p.urgente)||(projFilter==="completo"&&avg===100);
+    const matchQ=!q||p.nombre.toLowerCase().includes(q)||p.loc.toLowerCase().includes(q)||
+      p.hitos.some(h=>(h.exp||"").toLowerCase().includes(q));
+    return matchFilter&&matchQ;
+  });
+  buildProjGrid(list);
+}
+
+function setGestionFilter(f,btn){
+  gestionFilter=f;
+  document.querySelectorAll("#page-gestion .chip").forEach(c=>c.classList.remove("active"));
+  btn.classList.add("active");
+  let list=PROJS;
+  if(f!=="all") list=PROJS.map(p=>({...p,hitos:p.hitos.filter(h=>
+    (f==="urgente"&&h.est==="urgent")||(f==="proceso"&&h.est==="proc")||
+    (f==="done"&&h.est==="done")||(f==="block"&&h.est==="block")
+  )})).filter(p=>p.hitos.length>0);
+  buildGestion(list);
+}
+function filterGestion(q){
+  if(!q){buildGestion(PROJS);return;}
+  q=q.toLowerCase();
+  const list=PROJS.map(p=>({...p,hitos:p.hitos.filter(h=>
+    h.nombre.toLowerCase().includes(q)||(h.exp||"").toLowerCase().includes(q)||
+    (h.obs||"").toLowerCase().includes(q)||p.nombre.toLowerCase().includes(q)
+  )})).filter(p=>p.hitos.length>0||p.nombre.toLowerCase().includes(q));
+  buildGestion(list.length?list:PROJS.filter(p=>p.nombre.toLowerCase().includes(q)));
+}
+
+function setObraFilter(f,btn){
+  document.querySelectorAll("#page-obra .chip").forEach(c=>c.classList.remove("active"));
+  btn.classList.add("active");
+  let list=PROJS;
+  if(f==="100") list=PROJS.map(p=>({...p,obra:p.obra.filter(r=>r.p===100)})).filter(p=>p.obra.length);
+  else if(f==="parcial") list=PROJS.map(p=>({...p,obra:p.obra.filter(r=>r.p>0&&r.p<100)})).filter(p=>p.obra.length);
+  else if(f==="bloq") list=PROJS.map(p=>({...p,obra:p.obra.filter(r=>r.p===0)})).filter(p=>p.obra.length);
+  buildObra(list);
+}
+
+function setPVFilter(f,btn){
+  pvFilter=f;
+  document.querySelectorAll("#pv-chips .chip").forEach(c=>c.classList.remove("active"));
+  btn.classList.add("active");
+  const list=f==="all"?MODELOS:MODELOS.filter(m=>m.id===f);
+  buildModelos(list);
+}
+function filterModelos(q){
+  if(!q){buildModelos(pvFilter==="all"?MODELOS:MODELOS.filter(m=>m.id===pvFilter));return;}
+  q=q.toLowerCase();
+  const base=pvFilter==="all"?MODELOS:MODELOS.filter(m=>m.id===pvFilter);
+  buildModelos(base.filter(m=>m.sit.toLowerCase().includes(q)||m.texto.toLowerCase().includes(q)||(m.kwds||"").includes(q)||m.proj.toLowerCase().includes(q)));
+}
+
+function setClienteFilter(f,btn){
+  document.querySelectorAll("#page-clientes .chip").forEach(c=>c.classList.remove("active"));
+  btn.classList.add("active");
+  const list=f==="all"?CLIENTES:CLIENTES.filter(c=>c.est===f);
+  buildClientes(list);
+}
+
+// ══════════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════════
+function toggleModelo(id){
+  document.getElementById(id).classList.toggle("open");
+}
+function copyText(id){
+  const el=document.querySelector(`#${id} .modelo-text`);
+  if(!el) return;
+  navigator.clipboard.writeText(el.textContent.trim()).then(()=>{
+    const btn=document.querySelector(`#${id} .copy-btn`);
+    if(btn){const orig=btn.textContent;btn.textContent="✓ Copiado";setTimeout(()=>btn.textContent=orig,1500);}
+  });
+}
+
+function showPage(id, btn, fromBottomNav=false){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById("page-"+id).classList.add("active");
+  if(!fromBottomNav){
+    document.querySelectorAll(".ttab").forEach(t=>t.classList.remove("active"));
+    btn.classList.add("active");
+  } else {
+    document.querySelectorAll(".bnav-btn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll(".ttab").forEach((t,i)=>{
+      const pages=["home","gestion","obra","postventa","estrategia","clientes"];
+      t.classList.toggle("active",pages[i]===id);
+    });
+  }
+  window.scrollTo(0,0);
+}
+// ══════════════════════════════════════════════════════════════
+// EXPORTAR INFORME PDF
+// ══════════════════════════════════════════════════════════════
+let _currentProjId = null;
+
+function exportInformePDF(){
+  const p = PROJS.find(x => x.id === _currentProjId);
+  if(!p) return;
+
+  const fecha = new Date().toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"});
+
+  // ── Helpers ──────────────────────────────────────────────
+  const EST = {
+    done:   {cls:"pr-badge-done",  icon:"✅", lbl:"Aprobado"},
+    proc:   {cls:"pr-badge-proc",  icon:"🔄", lbl:"En proceso"},
+    urgent: {cls:"pr-badge-urgent",icon:"⚡", lbl:"Urgente"},
+    block:  {cls:"pr-badge-block", icon:"🔴", lbl:"Bloqueante"},
+    prog:   {cls:"pr-badge-prog",  icon:"○",  lbl:"Programado"},
+    na:     {cls:"pr-badge-na",    icon:"—",  lbl:"N/A"},
+  };
+  function badge(est){ const d=EST[est]||EST.na; return `<span class="pr-badge ${d.cls}">${d.icon} ${d.lbl}</span>`; }
+
+  function pctCol(v){ return v===100?"#1a8a50":v>=70?"#2060c0":v>=40?"#c06010":"#c02020"; }
+
+  // ── KPIs ─────────────────────────────────────────────────
+  const avg = Math.round((p.avanceGestion + (p.avanceObra??p.avanceGestion))/2);
+  const kpis = `
+    <div class="pr-kpi-row">
+      <div class="pr-kpi">
+        <div class="pr-kpi-label">Gestión</div>
+        <div class="pr-kpi-val" style="color:${pctCol(p.avanceGestion)}">${p.avanceGestion}%</div>
+        <div class="pr-bar-wrap"><div class="pr-bar" style="width:${p.avanceGestion}%;background:${pctCol(p.avanceGestion)}"></div></div>
+      </div>
+      <div class="pr-kpi">
+        <div class="pr-kpi-label">Obra</div>
+        <div class="pr-kpi-val" style="color:${pctCol(p.avanceObra??0)}">${p.avanceObra??0}%</div>
+        <div class="pr-bar-wrap"><div class="pr-bar" style="width:${p.avanceObra??0}%;background:${pctCol(p.avanceObra??0)}"></div></div>
+      </div>
+      <div class="pr-kpi">
+        <div class="pr-kpi-label">Avance general</div>
+        <div class="pr-kpi-val" style="color:${pctCol(avg)}">${avg}%</div>
+        <div class="pr-bar-wrap"><div class="pr-bar" style="width:${avg}%;background:${pctCol(avg)}"></div></div>
+      </div>
+      <div class="pr-kpi" style="border-left-color:#0a1a35">
+        <div class="pr-kpi-label">Entrega estimada</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:17px;color:#0a1a35;line-height:1.2;margin-top:3px">${p.entrega}</div>
+        <div class="pr-kpi-sub">${p.lotes?p.lotes+" lotes":""} ${p.ha?p.ha+"ha":""}</div>
+      </div>
+    </div>`;
+
+  // ── Nota del proyecto ─────────────────────────────────────
+  const notaHtml = p.nota ? `<div class="pr-nota-box">📌 ${p.nota}</div>` : "";
+
+  // ── Hitos de gestión ─────────────────────────────────────
+  let hitosHtml = "";
+  if(p.hitos && p.hitos.length){
+    const hitoRows = p.hitos.map(h => {
+      const d = EST[h.est]||EST.na;
+      const hdrBg = h.est==="done"?"#f0faf5": h.est==="urgent"?"#fff8f0": h.est==="block"?"#fff0f0": h.est==="proc"?"#f0f5ff":"#f8f9fa";
+      const subs = (h.sub||[]).map(s=>`
+        <div class="pr-sub-row">
+          <span style="color:#8090a0;font-size:10px;flex-shrink:0">└</span>
+          <span class="pr-sub-name">${s.nombre}${s.exp?` <span style="color:#b0c0d0;font-family:'DM Mono',monospace;font-size:9px">${s.exp}</span>`:""}</span>
+          ${badge(s.est)}
+        </div>`).join("");
+      return `<div class="pr-hito-block">
+        <div class="pr-hito-header" style="background:${hdrBg}">
+          <span class="pr-hito-name">${h.nombre}${h.exp?` <span style="color:#8090a0;font-family:'DM Mono',monospace;font-size:9px">${h.exp}</span>`:""}</span>
+          ${h.ini?`<span class="pr-hito-meta">${h.ini}${h.fin?" → "+h.fin:""}</span>`:""}
+          ${badge(h.est)}
+        </div>
+        ${subs}
+        ${h.obs?`<div style="padding:5px 12px 7px;font-size:10px;color:#6080a0;border-top:1px solid #eef2f7">${h.obs}</div>`:""}
+      </div>`;
+    }).join("");
+    hitosHtml = `<div class="pr-section-title">Hitos de gestión</div>${hitoRows}`;
+  } else if(p.gestion && p.gestion.length){
+    // Usar GESTION_DATA si no hay hitos simples
+    const hitoRows = p.gestion.map(h => {
+      const d = EST[h.est]||EST.na;
+      const hdrBg = h.est==="done"?"#f0faf5": h.est==="urgent"?"#fff8f0": h.est==="block"?"#fff0f0": h.est==="proc"?"#f0f5ff":"#f8f9fa";
+      return `<div class="pr-hito-block">
+        <div class="pr-hito-header" style="background:${hdrBg}">
+          <span class="pr-hito-name">${h.nombre}${h.exp?` <span style="color:#8090a0;font-family:'DM Mono',monospace;font-size:9px">${h.exp}</span>`:""}</span>
+          ${badge(h.est)}
+        </div>
+      </div>`;
+    }).join("");
+    hitosHtml = `<div class="pr-section-title">Hitos de gestión</div>${hitoRows}`;
+  }
+
+  // ── Obra ─────────────────────────────────────────────────
+  let obraHtml = "";
+  if(p.obra && p.obra.length){
+    const rows = p.obra.map(r=>{
+      const col = r.p===100?pctCol(100): r.p>=70?pctCol(70): r.p>=40?pctCol(40): pctCol(r.p);
+      const lbl = r.p===100?"Completo": r.p===0?"Pendiente":`${r.p}%`;
+      return `<div class="pr-rubro-row">
+        <div style="flex:1">
+          <div class="pr-rubro-name">${r.r}</div>
+          ${r.nota?`<div style="font-size:10px;color:#8090a0">${r.nota}</div>`:""}
+          ${r.p>0&&r.p<100?`<div class="pr-bar-wrap" style="margin-top:4px"><div class="pr-bar" style="width:${r.p}%;background:${col}"></div></div>`:""}
+        </div>
+        <div class="pr-rubro-pct" style="color:${col}">${lbl}</div>
+      </div>`;
+    }).join("");
+    obraHtml = `<div class="pr-section-title">Estado de obra</div><div style="padding:0 2px">${rows}</div>`;
+  }
+
+  // ── Checklist pendientes ──────────────────────────────────
+  const CL=[
+    {key:"uso_conforme", lbl:"Uso conforme"},
+    {key:"conv_urb",     lbl:"Convenio urbanístico"},
+    {key:"ch1",          lbl:"Certificado hídrico 1"},
+    {key:"ch2",          lbl:"Certificado hídrico 2"},
+    {key:"conv_elec",    lbl:"Convenio eléctrico"},
+    {key:"cat",          lbl:"CAT ambiental"},
+    {key:"eia",          lbl:"Estudio de impacto ambiental (EIA)"},
+    {key:"recepcion",    lbl:"Recepción de obras y visados"},
+    {key:"catastro",     lbl:"Catastro / Inscripción SCIT"},
+  ];
+  function hitoKeyPDF(h){
+    const n=h.nombre.toLowerCase();
+    if(n.includes("uso conforme")) return "uso_conforme";
+    if(n.includes("convenio urban")) return "conv_urb";
+    if(n.includes("ch1")||n==="ch1"||n==="certificado hídrico 1") return "ch1";
+    if(n.includes("ch2")||n==="ch2"||n==="certificado hídrico 2") return "ch2";
+    if(n.includes("convenio el")||n.includes("aprobación epe")) return "conv_elec";
+    if(n.includes("cat")&&(n.includes("ambiental")||n.includes("categoriz"))) return "cat";
+    if(n.includes("eia")||n.includes("impacto ambiental")) return "eia";
+    if(n.includes("recepción")||n.includes("recepcion")) return "recepcion";
+    if(n.includes("catastro")||n.includes("inscripción")) return "catastro";
+    return null;
+  }
+  const hMap={};
+  (p.hitos||[]).forEach(h=>{ const k=hitoKeyPDF(h); if(k) hMap[k]=h.est; });
+  (p.gestion||[]).forEach(h=>{ const k=hitoKeyPDF(h); if(k&&!hMap[k]) hMap[k]=h.est; });
+
+  const clRows = CL.map(item=>{
+    const est=hMap[item.key];
+    const d=EST[est]||{cls:"pr-badge-na",icon:"—",lbl:"Sin datos"};
+    return `<div class="pr-checklist-row">
+      <span class="pr-checklist-lbl">${item.lbl}</span>
+      <span class="pr-badge ${d.cls}">${d.icon} ${d.lbl}</span>
+    </div>`;
+  }).join("");
+  const doneCount = CL.filter(i=>hMap[i.key]==="done").length;
+  const clHtml = `<div class="pr-section-title">Checklist de gestión · ${doneCount}/${CL.length} completados</div>
+    <div style="padding:0 2px">${clRows}</div>`;
+
+  // ── Estrategia (si existe) ────────────────────────────────
+  const estr = ESTRATEGIA.find(e=>e.proj===p.nombre);
+  let estrHtml = "";
+  if(estr){
+    estrHtml = `<div class="pr-section-title">Estrategia interna</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px">
+        <div style="background:#f0f5ff;border-radius:7px;padding:12px 14px;border-left:3px solid #4794ff">
+          <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;color:#4060a0;text-transform:uppercase;margin-bottom:5px">Foco</div>
+          <div style="font-size:12px;color:#0a1a35">${estr.foco}</div>
+        </div>
+        <div style="background:#fff8f0;border-radius:7px;padding:12px 14px;border-left:3px solid #f0b429">
+          <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;color:#a07020;text-transform:uppercase;margin-bottom:5px">Punto crítico</div>
+          <div style="font-size:12px;color:#0a1a35">${estr.critico}</div>
+        </div>
+        <div style="background:#f0faf5;border-radius:7px;padding:12px 14px;border-left:3px solid #2ec87a;grid-column:1/-1">
+          <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;color:#1a6a40;text-transform:uppercase;margin-bottom:5px">Acciones clave</div>
+          <div style="font-size:12px;color:#0a1a35">${estr.accion}</div>
+        </div>
+      </div>`;
+  }
+
+  // ── Armar el HTML del informe ─────────────────────────────
+  document.getElementById("pdf-report").innerHTML = `
+    <div class="pr-page">
+      <div class="pr-header">
+        <div class="pr-logo-area">
+          <div class="pr-logo-name">
+            <span class="pr-logo-dot"></span> Grupo Roma
+          </div>
+          <div class="pr-logo-sub">Panel de gestión interna</div>
+        </div>
+        <div class="pr-header-right">
+          <div class="pr-proj-name">${p.nombre}</div>
+          <div class="pr-proj-meta">${p.loc}${p.ha?" · "+p.ha+"ha":""}${p.lotes?" · "+p.lotes+" lotes":""}</div>
+          <div class="pr-date">Informe generado: ${fecha}</div>
+        </div>
+      </div>
+
+      <div class="pr-body">
+        ${kpis}
+        ${notaHtml}
+        ${hitosHtml}
+        ${obraHtml}
+        ${clHtml}
+        ${estrHtml}
+      </div>
+
+      <div class="pr-footer">
+        <div class="pr-footer-left">GRUPO ROMA · INFORME INTERNO · ${fecha} · CONFIDENCIAL</div>
+        <div class="pr-footer-right">Panel de gestión v10 · gruporoma.com.ar</div>
+      </div>
+    </div>`;
+
+  // ── Imprimir ──────────────────────────────────────────────
+  setTimeout(()=>{ window.print(); }, 120);
+}
+</script>
+</body>
+</html>
