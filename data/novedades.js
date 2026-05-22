@@ -187,4 +187,21 @@ const NOVEDADES = [
     "copy_base_marketing": "",
     "notas_internas": ""
   }
+,
+  {
+    "id": "nov-2026-05-21-cepe-hola",
+    "fecha": "2026-05-21",
+    "barrio_id": "CEPE",
+    "barrio": "CEPE",
+    "categoria": "obra",
+    "titulo": "Hola",
+    "detalle": "hola como estas estoy cargando informacion",
+    "visibilidad": "cliente",
+    "apto_postventa": true,
+    "apto_marketing": true,
+    "prioridad_comunicacion": "media",
+    "formato_sugerido": [],
+    "copy_base_marketing": "",
+    "notas_internas": ""
+  }
 ];
