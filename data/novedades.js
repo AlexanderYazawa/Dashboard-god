@@ -168,4 +168,23 @@ const NOVEDADES = [
     "copy_base_marketing": "",
     "notas_internas": ""
   }
+,
+  {
+    "id": "nov-2026-05-21-lm-se-finalizo-el-parque-papito",
+    "fecha": "2026-05-21",
+    "barrio_id": "LM",
+    "barrio": "Los Muchachos",
+    "categoria": "obra",
+    "titulo": "Se finalizo el parque papito",
+    "detalle": "Se finalizo el alumbrado del parque",
+    "visibilidad": "cliente",
+    "apto_postventa": true,
+    "apto_marketing": true,
+    "prioridad_comunicacion": "alta",
+    "formato_sugerido": [
+      "Historia"
+    ],
+    "copy_base_marketing": "",
+    "notas_internas": ""
+  }
 ];
