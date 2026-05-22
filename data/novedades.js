@@ -130,4 +130,23 @@ const NOVEDADES = [
     copy_base_marketing: "",
     notas_internas: ""
   },
+
+  {
+    "id": "nov-2026-05-24-en-prueba-de-guardado-automatico",
+    "fecha": "2026-05-24",
+    "barrio_id": "EN",
+    "barrio": "El Naranjo",
+    "categoria": "obra",
+    "titulo": "Prueba de guardado automático",
+    "detalle": "Esta novedad fue cargada automáticamente desde el formulario/API.",
+    "visibilidad": "cliente",
+    "apto_postventa": true,
+    "apto_marketing": true,
+    "prioridad_comunicacion": "media",
+    "formato_sugerido": [
+      "historia"
+    ],
+    "copy_base_marketing": "",
+    "notas_internas": ""
+  }
 ];
