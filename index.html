@@ -610,6 +610,132 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <div id="clientes-list"></div>
 </div>
 
+  <!-- ═══════════════════════════════════════════════════════════
+     PAGE: CARGAR NOVEDAD
+════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-cargar-novedad">
+  <div class="section-hdr">
+    <h2>Cargar novedad</h2>
+    <span>Generador para data/novedades.js</span>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;border-color:var(--border2)">
+    <div class="card-title">Datos de la novedad</div>
+
+    <div class="grid2">
+      <div>
+        <label class="card-title">Fecha</label>
+        <input class="search-input" id="nov-fecha" type="date">
+      </div>
+
+      <div>
+        <label class="card-title">Barrio</label>
+        <select class="search-input" id="nov-barrio">
+          <option value="EN|El Naranjo">El Naranjo</option>
+          <option value="EN2|El Naranjo 2">El Naranjo 2</option>
+          <option value="CM|Campo Madero">Campo Madero</option>
+          <option value="CM2|Campo Madero 2">Campo Madero 2</option>
+          <option value="VI|Vitta">Vitta</option>
+          <option value="VR|Vitta Río">Vitta Río</option>
+          <option value="VN|Vitta Norte">Vitta Norte</option>
+          <option value="CEPE|CEPE">CEPE</option>
+          <option value="CZ|CEZA">CEZA</option>
+          <option value="LM|Los Muchachos">Los Muchachos</option>
+          <option value="OR|Orígenes">Orígenes</option>
+          <option value="OR2|Orígenes 2">Orígenes 2</option>
+          <option value="CDE|Clos del Este">Clos del Este</option>
+          <option value="FOR|Foresta">Foresta</option>
+          <option value="TA|Tierra de Autores">Tierra de Autores</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="card-title">Categoría</label>
+        <select class="search-input" id="nov-categoria">
+          <option value="obra">Obra</option>
+          <option value="gestion">Gestión</option>
+          <option value="servicios">Servicios</option>
+          <option value="mantenimiento">Mantenimiento</option>
+          <option value="institucional">Institucional</option>
+          <option value="comercial">Comercial</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="card-title">Visibilidad</label>
+        <select class="search-input" id="nov-visibilidad">
+          <option value="cliente">Cliente</option>
+          <option value="interna">Interna</option>
+          <option value="direccion">Dirección</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="margin-top:14px">
+      <label class="card-title">Título</label>
+      <input class="search-input" id="nov-titulo" type="text" placeholder="Ej: Finalización de pavimentación">
+    </div>
+
+    <div style="margin-top:14px">
+      <label class="card-title">Detalle</label>
+      <textarea class="search-input" id="nov-detalle" rows="4" style="resize:vertical;padding-left:16px" placeholder="Ej: Se terminó de pavimentar la calle Pepito Marto desde Jorge Pecha hasta Martín Ojeda."></textarea>
+    </div>
+
+    <div class="grid2" style="margin-top:14px">
+      <div>
+        <label class="card-title">Apto postventa</label>
+        <select class="search-input" id="nov-postventa">
+          <option value="true">Sí</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="card-title">Apto marketing</label>
+        <select class="search-input" id="nov-marketing">
+          <option value="true">Sí</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="card-title">Prioridad comunicación</label>
+        <select class="search-input" id="nov-prioridad">
+          <option value="baja">Baja</option>
+          <option value="media" selected>Media</option>
+          <option value="alta">Alta</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="card-title">Formatos sugeridos</label>
+        <input class="search-input" id="nov-formatos" type="text" placeholder="historia, placa, reel">
+      </div>
+    </div>
+
+    <div style="margin-top:14px">
+      <label class="card-title">Copy base marketing</label>
+      <textarea class="search-input" id="nov-copy" rows="3" style="resize:vertical;padding-left:16px" placeholder="Texto base opcional para redes"></textarea>
+    </div>
+
+    <div style="margin-top:14px">
+      <label class="card-title">Notas internas</label>
+      <textarea class="search-input" id="nov-notas" rows="3" style="resize:vertical;padding-left:16px" placeholder="Notas internas opcionales. No se usan para clientes."></textarea>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+      <button class="copy-btn" onclick="generarBloqueNovedad()">Generar novedad</button>
+      <button class="copy-btn" onclick="copiarBloqueNovedad()">Copiar bloque</button>
+      <button class="copy-btn" onclick="limpiarFormularioNovedad()">Limpiar</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Bloque generado para pegar en data/novedades.js</div>
+    <pre id="nov-output" style="white-space:pre-wrap;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text);overflow-x:auto">Completá el formulario y tocá “Generar novedad”.</pre>
+  </div>
+</div>
+
 <!-- DETAIL OVERLAY -->
 <div class="overlay" id="overlay" onclick="closeOverlay(event)">
   <div class="detail-sheet" id="detail-sheet">
@@ -1763,7 +1889,99 @@ function renderNovedades(){
     `;
   }).join('');
 }
+// ── GENERADOR DE NOVEDADES ─────────────────────────────────
+function slugifyNovedad(text){
+  return String(text || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 50);
+}
 
+function jsString(value){
+  return String(value || '')
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, '\\n');
+}
+
+function generarBloqueNovedad(){
+  const fecha = document.getElementById('nov-fecha').value;
+  const barrioRaw = document.getElementById('nov-barrio').value;
+  const [barrio_id, barrio] = barrioRaw.split('|');
+
+  const categoria = document.getElementById('nov-categoria').value;
+  const titulo = document.getElementById('nov-titulo').value.trim();
+  const detalle = document.getElementById('nov-detalle').value.trim();
+  const visibilidad = document.getElementById('nov-visibilidad').value;
+  const aptoPostventa = document.getElementById('nov-postventa').value === 'true';
+  const aptoMarketing = document.getElementById('nov-marketing').value === 'true';
+  const prioridad = document.getElementById('nov-prioridad').value;
+  const formatosRaw = document.getElementById('nov-formatos').value.trim();
+  const copy = document.getElementById('nov-copy').value.trim();
+  const notas = document.getElementById('nov-notas').value.trim();
+
+  if(!fecha || !barrio_id || !titulo || !detalle){
+    alert('Completá al menos fecha, barrio, título y detalle.');
+    return;
+  }
+
+  const formatos = formatosRaw
+    ? formatosRaw.split(',').map(f => f.trim()).filter(Boolean)
+    : [];
+
+  const id = `nov-${fecha}-${barrio_id.toLowerCase()}-${slugifyNovedad(titulo)}`;
+
+  const formatosText = `[${formatos.map(f => `"${jsString(f)}"`).join(', ')}]`;
+
+  const bloque = `{
+  id: "${jsString(id)}",
+  fecha: "${jsString(fecha)}",
+  barrio_id: "${jsString(barrio_id)}",
+  barrio: "${jsString(barrio)}",
+  categoria: "${jsString(categoria)}",
+  titulo: "${jsString(titulo)}",
+  detalle: "${jsString(detalle)}",
+  visibilidad: "${jsString(visibilidad)}",
+  apto_postventa: ${aptoPostventa},
+  apto_marketing: ${aptoMarketing},
+  prioridad_comunicacion: "${jsString(prioridad)}",
+  formato_sugerido: ${formatosText},
+  copy_base_marketing: "${jsString(copy)}",
+  notas_internas: "${jsString(notas)}"
+},`;
+
+  document.getElementById('nov-output').textContent = bloque;
+}
+
+function copiarBloqueNovedad(){
+  const output = document.getElementById('nov-output').textContent;
+  if(!output || output.includes('Completá el formulario')){
+    alert('Primero generá una novedad.');
+    return;
+  }
+
+  navigator.clipboard.writeText(output)
+    .then(() => alert('Bloque copiado. Pegalo dentro de data/novedades.js.'))
+    .catch(() => alert('No se pudo copiar. Seleccioná el texto manualmente.'));
+}
+
+function limpiarFormularioNovedad(){
+  ['nov-fecha','nov-titulo','nov-detalle','nov-formatos','nov-copy','nov-notas'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+
+  document.getElementById('nov-visibilidad').value = 'cliente';
+  document.getElementById('nov-postventa').value = 'true';
+  document.getElementById('nov-marketing').value = 'true';
+  document.getElementById('nov-prioridad').value = 'media';
+  document.getElementById('nov-output').textContent = 'Completá el formulario y tocá “Generar novedad”.';
+}
+
+  
 </script>
 </body>
 </html>
