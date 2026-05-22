@@ -113,4 +113,21 @@ const NOVEDADES = [
     copy_base_marketing: "",
     notas_internas: ""
   },
+
+  {
+    id: "nov-2026-05-22-cepe-se-finalizo-la-instalacion-de-starlink-en-la-zona-",
+    fecha: "2026-05-22",
+    barrio_id: "CEPE",
+    barrio: "CEPE",
+    categoria: "servicios",
+    titulo: "Se finalizó la instalacion de Starlink en la zona streamer",
+    detalle: "Se finalizó la instalacion de fibra optica y antenas en la denominada zona streamer del bario CEPE",
+    visibilidad: "cliente",
+    apto_postventa: true,
+    apto_marketing: true,
+    prioridad_comunicacion: "alta",
+    formato_sugerido: ["Historia"],
+    copy_base_marketing: "",
+    notas_internas: ""
+  },
 ];
