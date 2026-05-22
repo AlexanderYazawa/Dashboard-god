@@ -96,4 +96,21 @@ const NOVEDADES = [
     copy_base_marketing: "Seguimos avanzando en El Naranjo: finalizamos la pavimentación de la calle Pepito Marto, desde Jorge Pecha hasta Martín Ojeda.",
     notas_internas: ""
   }
+
+  {
+    id: "nov-2026-05-23-en-se-contruyo-una-estatua-de-goku",
+    fecha: "2026-05-23",
+    barrio_id: "EN",
+    barrio: "El Naranjo",
+    categoria: "obra",
+    titulo: "Se contruyo una ESTATUA DE GOKU",
+    detalle: "Se finalizo la consgruccion de una estatia tamaño real de Goku SSJ 4",
+    visibilidad: "cliente",
+    apto_postventa: true,
+    apto_marketing: true,
+    prioridad_comunicacion: "alta",
+    formato_sugerido: ["Historia"],
+    copy_base_marketing: "",
+    notas_internas: ""
+  },
 ];
