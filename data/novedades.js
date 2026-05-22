@@ -149,4 +149,23 @@ const NOVEDADES = [
     "copy_base_marketing": "",
     "notas_internas": ""
   }
+,
+  {
+    "id": "nov-2026-05-15-cepe-terminado-el-proceso-de-aprobacion-de-santa-fe-mue",
+    "fecha": "2026-05-15",
+    "barrio_id": "CEPE",
+    "barrio": "CEPE",
+    "categoria": "gestion",
+    "titulo": "Terminado el proceso de aprobacion de Santa Fe mueble",
+    "detalle": "Se finalizo el proceso para la construccion en los lotes",
+    "visibilidad": "cliente",
+    "apto_postventa": true,
+    "apto_marketing": true,
+    "prioridad_comunicacion": "alta",
+    "formato_sugerido": [
+      "Historia"
+    ],
+    "copy_base_marketing": "",
+    "notas_internas": ""
+  }
 ];
